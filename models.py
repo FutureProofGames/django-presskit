@@ -19,6 +19,9 @@ class AdditionalLink(models.Model):
 class Attachment(models.Model):
     content = FilerImageField()
 
+    def __unicode__(self):
+        return self.content.url
+
 class Award(models.Model):
     description = models.CharField(max_length=200)
     info = models.CharField(max_length=1000, null=True, blank=True)
@@ -28,21 +31,33 @@ class Award(models.Model):
 
 class Company(models.Model):
     title = models.CharField(max_length=200)
+    website = models.URLField(null=True, blank=True)
+    header_image = FilerImageField(null=True, blank=True,
+                                   related_name='company_header_image')
     based_in = models.CharField(max_length=400, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     history = models.TextField(null=True, blank=True)
-    analytics = models.CharField(max_length=200, null=True, blank=True)
-    promoter_id = models.CharField(max_length=20, null=True,
-                                   blank=True)
+    analytics = models.CharField(max_length=200, null=True, blank=True,
+                                 help_text='Your Google Analytics ID')
+    promoter_id = models.CharField(
+        max_length=20, null=True, blank=True,
+        help_text='A product ID in Promoter with quotes for your company')
     founding_date = models.CharField(max_length=200, null=True,
                                      blank=True)
-    press_contact = models.EmailField(max_length=200, null=True,
-                                      blank=True)
+    press_contact = models.EmailField(
+        max_length=200, null=True, blank=True,
+        help_text='The primary press contact email for your company')
     phone = models.CharField(max_length=50, null=True, blank=True)
     address = models.TextField(null=True, blank=True)
     additional_links = models.ManyToManyField(AdditionalLink,
                                               blank=True)
+    images = models.ManyToManyField(Attachment,
+                                    through='CompanyImageAttachment',
+                                    related_name='company_images')
     quotes = models.ManyToManyField('Quote', blank=True)
+    awards = models.ManyToManyField('Award', blank=True)
+    credits = models.ManyToManyField('Credit', blank=True)
+    contacts = models.ManyToManyField('Contact', blank=True)
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_updated = models.DateTimeField(auto_now=True)
 
@@ -52,6 +67,24 @@ class Company(models.Model):
 
     class Meta:
         verbose_name_plural = 'companies'
+
+
+class CompanyImageAttachment(models.Model):
+    company = models.ForeignKey(Company, on_delete=models.CASCADE)
+    attachment = models.ForeignKey(Attachment,
+                                   on_delete=models.CASCADE)
+    datetime_created = models.DateTimeField(auto_now_add=True)
+    datetime_updated = models.DateTimeField(auto_now=True)
+
+class CompanyVideo(models.Model):
+    name = models.CharField(max_length=400)
+    company = models.ForeignKey(Company, related_name='videos')
+    video_type = models.ForeignKey('VideoType')
+    embed_url = models.URLField()
+    file = FilerFileField(null=True, blank=True,
+                          related_name='company_video')
+    datetime_created = models.DateTimeField(auto_now_add=True)
+    datetime_updated = models.DateTimeField(auto_now=True)
 
 
 class Contact(models.Model):
@@ -73,7 +106,7 @@ class Credit(models.Model):
     datetime_updated = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
-        return self.person + ' ' + self.role
+        return self.person + ', ' + self.role
 
 
 class Feature(models.Model):
@@ -140,6 +173,7 @@ class Project(models.Model):
     additional_links = models.ManyToManyField(AdditionalLink,
                                               blank=True)
     credits = models.ManyToManyField(Credit, blank=True)
+    contacts = models.ManyToManyField(Contact, blank=True)
     company = models.ForeignKey(Company)
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_updated = models.DateTimeField(auto_now=True)
@@ -174,7 +208,7 @@ class Quote(models.Model):
     datetime_updated = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
-        return self.reviewer + ' ' + self.website
+        return self.reviewer + ', ' + self.website + ', ' + self.description
 
 
 class Social(models.Model):
@@ -183,6 +217,9 @@ class Social(models.Model):
     company = models.ForeignKey(Company)
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_updated = models.DateTimeField(auto_now=True)
+
+    def __unicode__(self):
+        return self.company.title + ' ' + self.name
 
 
 class Trailer(models.Model):
