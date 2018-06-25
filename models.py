@@ -54,6 +54,9 @@ class Company(models.Model):
     images = models.ManyToManyField(Attachment,
                                     through='CompanyImageAttachment',
                                     related_name='company_images')
+    logos = models.ManyToManyField(Attachment,
+                                   through='CompanyLogoAttachment',
+                                   related_name='company_logos')
     quotes = models.ManyToManyField('Quote', blank=True)
     awards = models.ManyToManyField('Award', blank=True)
     credits = models.ManyToManyField('Credit', blank=True)
@@ -75,6 +78,15 @@ class CompanyImageAttachment(models.Model):
                                    on_delete=models.CASCADE)
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_updated = models.DateTimeField(auto_now=True)
+
+
+class CompanyLogoAttachment(models.Model):
+    company = models.ForeignKey(Company, on_delete=models.CASCADE)
+    attachment = models.ForeignKey(Attachment,
+                                   on_delete=models.CASCADE)
+    datetime_created = models.DateTimeField(auto_now_add=True)
+    datetime_updated = models.DateTimeField(auto_now=True)
+
 
 class CompanyVideo(models.Model):
     name = models.CharField(max_length=400)

@@ -6,11 +6,17 @@ from django.contrib import admin
 from .models import AdditionalLink, Attachment, Award, Company
 from .models import CompanyImageAttachment, Contact, Credit, Feature
 from .models import MonetizationPermission, Platform, Price, Project, Quote
-from .models import Social, Trailer, VideoType
+from .models import Social, Trailer, VideoType, CompanyLogoAttachment
 
 
 class CompanyImagesInline(admin.StackedInline):
     model = CompanyImageAttachment
+    readonly_fields = ('datetime_created', 'datetime_updated',)
+    extra = 1
+
+
+class CompanyLogosInline(admin.StackedInline):
+    model = CompanyLogoAttachment
     readonly_fields = ('datetime_created', 'datetime_updated',)
     extra = 1
 
@@ -36,7 +42,7 @@ class CompanyAdmin(admin.ModelAdmin):
     readonly_fields = ('datetime_created', 'datetime_updated',)
     filter_horizontal = (
         'additional_links', 'quotes', 'contacts', 'credits', 'awards')
-    inlines = [SocialInline, CompanyImagesInline]
+    inlines = [SocialInline, CompanyImagesInline, CompanyLogosInline]
 
 
 class ContactAdmin(admin.ModelAdmin):
