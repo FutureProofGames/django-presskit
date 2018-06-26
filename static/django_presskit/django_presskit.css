@@ -1,7 +1,10 @@
 /* Layout */
 
 body {
+  display: -ms-grid;
   display: grid;
+  -ms-grid-columns: 1fr 1em 1fr 1em 2fr;
+  -ms-grid-rows: auto auto auto 1fr 3em;
   grid-template-columns: 1fr 1fr 2fr;
   grid-column-gap: 1em;
   grid-template-areas: 
@@ -63,6 +66,10 @@ a:hover, a:active, a:focus {
 /* Identity */
 
 .identity {
+  -ms-grid-column: 1;
+  -ms-grid-row: 1;
+  -ms-grid-row-span: 1;
+  -ms-grid-column-span: 1;
   grid-area: identity;
 }
 
@@ -73,6 +80,10 @@ a:hover, a:active, a:focus {
 /* Page Header */
 
 .page-header {
+  -ms-grid-column: 3;
+  -ms-grid-row: 1;
+  -ms-grid-row-span: 2;
+  -ms-grid-column-span: 3;
   grid-area: header;
   text-align: center;
 }
@@ -84,6 +95,9 @@ a:hover, a:active, a:focus {
 /* Navigation */
 
 .navigation {
+  -ms-grid-column: 1;
+  -ms-grid-row: 2;
+  -ms-grid-row-span: 3;
   grid-area: sidebar;
 }
 
@@ -111,10 +125,14 @@ a:hover, a:active, a:focus {
 /* Above the Fold */
 
 .above-fold {
+  -ms-grid-column: 5;
+  -ms-grid-row: 3;
   grid-area: above-fold;
 }
 
 .factsheet {
+  -ms-grid-column: 3;
+  -ms-grid-row: 3;
   grid-area: factsheet;
 }
 
@@ -130,6 +148,9 @@ a:hover, a:active, a:focus {
 /* Below the Fold */
 
 .below-fold {
+  -ms-grid-column: 3;
+  -ms-grid-row: 4;
+  -ms-grid-column-span: 3;
   grid-area: below-fold;
 }
 
@@ -146,6 +167,9 @@ a:hover, a:active, a:focus {
 /* Page Footer */
 
 .page-footer {
+  -ms-grid-column: 1;
+  -ms-grid-row: 5;
+  -ms-grid-column-span: 5;
   grid-area: footer;
   text-align: center;
 }
