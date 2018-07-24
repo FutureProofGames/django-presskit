@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django.shortcuts import render
 from django.conf import settings
 
-from .models import Company
+from .models import Company, Project
 
 def presskit(request, company_id=None):
     if not company_id:
@@ -19,5 +19,9 @@ def presskit(request, company_id=None):
     }
     return render(request, 'django_presskit/company.html', context)
 
-def project(request):
-    pass
+def project(request, project_id):
+    project = Project.objects.get(pk=project_id)
+    context = {
+      'project': project,
+    }
+    return render(request, 'django_presskit/project.html', context)
