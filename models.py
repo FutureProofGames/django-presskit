@@ -172,6 +172,7 @@ class Project(models.Model):
     quotes = models.ManyToManyField('Quote', blank=True)
     additional_links = models.ManyToManyField(AdditionalLink,
                                               blank=True)
+    awards = models.ManyToManyField('Award', blank=True)
     credits = models.ManyToManyField(Credit, blank=True)
     contacts = models.ManyToManyField(Contact, blank=True)
     company = models.ForeignKey(Company)
