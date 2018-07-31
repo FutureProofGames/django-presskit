@@ -61,27 +61,34 @@ class CreditAdmin(admin.ModelAdmin):
     readonly_fields = ('datetime_created', 'datetime_updated',)
 
 
-class FeatureAdmin(admin.ModelAdmin):
-    readonly_fields = ('datetime_created', 'datetime_updated',)
-
-
 class MonetizationPermissionAdmin(admin.ModelAdmin):
     readonly_fields = ('datetime_created', 'datetime_updated',)
 
 
-class PlatformAdmin(admin.ModelAdmin):
+class FeatureInline(admin.TabularInline):
+    model = Feature
     readonly_fields = ('datetime_created', 'datetime_updated',)
+    extra = 1
 
 
-class PriceAdmin(admin.ModelAdmin):
+class PlatformInline(admin.TabularInline):
+    model = Platform
     readonly_fields = ('datetime_created', 'datetime_updated',)
+    extra = 1
+
+
+class PriceInline(admin.TabularInline):
+    model = Price
+    readonly_fields = ('datetime_created', 'datetime_updated',)
+    extra = 1
 
 
 class ProjectAdmin(admin.ModelAdmin):
     readonly_fields = ('datetime_created', 'datetime_updated',)
     filter_horizontal = (
         'additional_links', 'quotes', 'contacts', 'credits', 'awards')
-    inlines = [ProjectLogosInline, ProjectImagesInline]
+    inlines = [FeatureInline, PriceInline, PlatformInline,
+        ProjectLogosInline, ProjectImagesInline]
 
 
 class QuoteAdmin(admin.ModelAdmin):
@@ -102,10 +109,7 @@ admin.site.register(Award, AwardAdmin)
 admin.site.register(Company, CompanyAdmin)
 admin.site.register(Contact, ContactAdmin)
 admin.site.register(Credit, CreditAdmin)
-admin.site.register(Feature, FeatureAdmin)
 admin.site.register(MonetizationPermission, MonetizationPermissionAdmin)
-admin.site.register(Platform, PlatformAdmin)
-admin.site.register(Price, PriceAdmin)
 admin.site.register(Project, ProjectAdmin)
 admin.site.register(Quote, QuoteAdmin)
 admin.site.register(Trailer, TrailerAdmin)
