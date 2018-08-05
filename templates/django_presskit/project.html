@@ -1,44 +1,54 @@
 {% extends "django_presskit/base.html" %}
 {% load dpk_util thumbnail %}
 
-{% block title %}{{company.title}} Presskit{% endblock %}
+{% block title %}{{project.title}} Presskit{% endblock %}
 
 {% block identity %}
-<h1>{{company.title}}</h1>
-{% if company.website %}
-<a href="{{company.website | absolute_url}}" class="identity-link">{{company.website}}</a>
-{% endif %}
+<h1>{{project.title}}</h1>
+<a href="{% url 'default' %}" class="identity-link">press kit</a>
 {% endblock %}
 
 {% block header %}
-{% if company.header_image %}
-  <img class="header-image" src="{{ company.header_image.url }}">
+{% if project.header_image %}
+  <img class="header-image" src="{{ project.header_image.url }}">
 {% endif %}
 {% endblock %}{# header #}
 
 {% block above-fold %}
-{% if company.description %}
+{% if project.description %}
   <section id="description">
     <h2>Description</h2>
 
-    {{company.description | markdown}}
+    {{project.description | markdown}}
   </section>
 {% endif %}
 
-{% if company.history %}
+{% if project.history %}
   <section id="history">
     <h2>History</h2>
 
-    {{company.history | markdown}}
+    {{project.history | markdown}}
   </section>
 {% endif %}
 
-{% if company.project_set.count %}
+{% if project.feature_set.count %}
+  <section id="features">
+    <h2>Features</h2>
+
+    <ul class="feature-list">
+      {% for feature in project.feature_set.all %}
+        <li>{{feature.description | markdown}}</li>
+      {% endfor %}
+    </ul>
+  </section>
+{% endif %}
+
+{% if project.project_set.count %}
   <section id="projects">
     <h2>Projects</h2>
 
     <ul class="projects-list">
-      {% for project in company.project_set.all %}
+      {% for project in project.project_set.all %}
         <li><a href="{% url 'project' project.id %}">{{project.title}}</a></li>
       {% endfor %}
     </ul>
@@ -53,81 +63,59 @@
 <section>
   <h3>Developer:</h3>
   <p>
-    {% if company.website %}
-      <a href="{{company.website | absolute_url}}">{{company.title}}</a>
+    {% if project.company.website %}
+      <a href="{{project.company.website | absolute_url}}">{{project.company.title}}</a>
     {% else %}
-      {{company.title}}
+      {{project.company.title}}
     {% endif%}
-    {% if company.based_in %}<br>Based in {{company.based_in}}{% endif %}
+    {% if project.company.based_in %}<br>Based in {{project.company.based_in}}{% endif %}
   </p>
 </section>
 
-{% if company.founding_date %}
+{% if project.release_date %}
 <section>
-  <h3>Founding Date:</h3>
-  <p>{{company.founding_date}}</p>
+  <h3>Release Date:</h3>
+  <p>{{project.release_date}}</p>
 </section>
 {% endif %}
 
-{% if company.website %}
+{% if project.platform_set.count %}
 <section>
-  <h3>Website:</h3>
-  <p><a href="{{company.website}}">{{company.website}}</a></p>
-</section>
-{% endif %}
-
-{% if company.press_contact %}
-<section>
-  <h3>Press / Business contact:</h3>
-  <p><a href="mailto:{{company.press_contact}}">{{company.press_contact}}</a></p>
-</section>
-{% endif %}
-
-{% if company.social_set.count %}
-<section>
-  <h3>Social:</h3>
-
-  <ul class="social-links">
-  {% for social in company.social_set.all %}
-    <li><a href="{{social.website | absolute_url}}">{{social.name}}</a></li>
+  <h3>Platforms:</h3>
+  <ul>
+  {% for platform in project.platform_set.all %}
+    <li><a href="{{ platform.website }}">{{platform.name}}</a></li>
   {% endfor %}
   </ul>
 </section>
 {% endif %}
 
-{% if company.project_set.count %}
+{% if project.website %}
 <section>
-  <h3>Releases:</h3>
-  <ul class="releases-list">
-    {% for project in company.project_set.all %}
-      <li><a href="{% url 'project' project.id %}">{{project.title}}</a></li>
-    {% endfor %}
+  <h3>Website:</h3>
+  <p><a href="{{project.website}}">{{project.website}}</a></p>
+</section>
+{% endif %}
+
+{% if project.price_set.count %}
+<section>
+  <h3>Regular Price:</h3>
+  <ul>
+  {% for price in project.price_set.all %}
+    <li>{{price.price}}</li>
+  {% endfor %}
   </ul>
-</section>
-{% endif %}
-
-{% if company.address %}
-<section>
-  <h3>Address:</h3>
-  {{company.address | markdown}}
-</section>
-{% endif %}
-
-{% if company.phone %}
-<section>
-  <h3>Phone:</h3>
-  <p>{{company.phone}}</p>
 </section>
 {% endif %}
 
 {% endblock %}{# factsheet #}
 
 {% block below-fold %}
-{% if company.videos.count %}
+{% if project.videos.count %}
   <section id="videos">
     <h2>Videos</h2>
     <ul>
-    {% for video in company.videos %}
+    {% for video in project.videos %}
       <li>
         {% if video.embed_url %}<a href="{{ video.embed_url }}"{% endif%}
           {{ video.name }}
@@ -138,41 +126,40 @@
   </section>
 {% endif %}
 
-{% if company.images.count %}
+{% if project.images.count %}
   <section id="images">
     <h2>Images</h2>
-    {% for image in company.images.all %}
+    {% for image in project.images.all %}
       <a href="{{ image.content.url }}"><img class="attached-image" src="{% thumbnail image.content 250x250 crop %}"></a>
     {% endfor %}
-    <p>Many more images are available for {{company.title}}. <a href="#contact">Contact us</a> if you have a specific request!</p>
   </section>
 {% endif %}
 
-{% if company.logos.count %}
+{% if project.logos.count %}
   <section id="logos">
     <h2>Logo &amp; Icon</h2>
-    {% for image in company.images.all %}
+    {% for image in project.logos.all %}
       <a href="{{ image.content.url }}"><img class="attached-image" src="{% thumbnail image.content 250x250 crop %}"></a>
     {% endfor %}
   </section>
 {% endif %}
 
-{% if company.awards.count %}
+{% if project.awards.count %}
   <section id="awards">
     <h2>Awards &amp; Recognition</h2>
     <ul>
-    {% for award in company.awards.all %}
+    {% for award in project.awards.all %}
       <li>{{award.description}} {% if award.info %}<cite>{{award.info}}</cite>{% endif %}</li>
     {% endfor %}
     </ul>
   </section>
 {% endif %}
 
-{% if company.quotes.count %}
+{% if project.quotes.count %}
   <section id="quotes">
     <h2>Selected Articles</h2>
-    {% for quote in company.quotes.all %}
-      <blockquote class="quotation quotation--company">
+    {% for quote in project.quotes.all %}
+      <blockquote class="quotation quotation--project">
         {{quote.description | markdown}}
         <cite>
           <a href="{{quote.website | absolute_url}}">
@@ -185,12 +172,23 @@
   </section>
 {% endif %}
 
+{% if project.additional_links.count %}
+  <section id="additional-links">
+    <h2>Additional Links</h2>
+    {% for link in project.additional_links.all %}
+      <h3 class="additional-links">{{link.title}}</h3>
+
+      <p>{{link.description}} <a href="{{link.website | absolute_url}}">{{link.website | domain}}</a></p>
+    {% endfor %}
+  </section>
+{% endif %}
+
 <div class="bottom-columns">
 
-{% if company.credits.count %}
+{% if project.credits.count %}
 <section id="team">
-  <h2>Team</h2>
-  {% for credit in company.credits.all %}
+  <h2>{{project.title}} Credits</h2>
+  {% for credit in project.credits.all %}
     <section class="credit">
       <h3>{{credit.person}}</h3>
       {% if credit.website or credit.role %}
@@ -203,10 +201,10 @@
 </section>
 {% endif %}
 
-{% if company.contacts.count %}
+{% if project.contacts.count %}
 <section id="contact">
   <h2>Contact</h2>
-  {% for contact in company.contacts.all %}
+  {% for contact in project.contacts.all %}
     <h3>{{contact.name}}</h3>
 
     {% if contact.website %}
@@ -226,25 +224,27 @@
 
 {% block navigation %}
 <ul class="main-navigation">
-  {% optional_navitem company 'factsheet' 'Factsheet' %}
-  {% optional_navitem company.description 'description' 'Description' %}
-  {% optional_navitem company.history 'history' 'History' %}
-  {% optional_navitem company.project_set.count 'projects' 'Projects' %}
-  {% optional_navitem company.videos.count 'videos' 'Videos' %}
-  {% optional_navitem company.images.count 'images' 'Images' %}
-  {% optional_navitem company.logos.count 'logos' 'Logo &amp; Icon' %}
-  {% optional_navitem company.awards.count 'awards' 'Awards &amp; Recognition' %}
-  {% optional_navitem company.quotes.count 'quotes' 'Selected Articles' %}
-  {% optional_navitem company.credits.count 'team' 'Team' %}
-  {% optional_navitem company 'contact' 'Contact' %}
+  {% optional_navitem project 'factsheet' 'Factsheet' %}
+  {% optional_navitem project.description 'description' 'Description' %}
+  {% optional_navitem project.history 'history' 'History' %}
+  {% optional_navitem project.feature_set.count 'features' 'Features' %}
+  {% optional_navitem project.project_set.count 'projects' 'Projects' %}
+  {% optional_navitem project.videos.count 'videos' 'Videos' %}
+  {% optional_navitem project.images.count 'images' 'Images' %}
+  {% optional_navitem project.logos.count 'logos' 'Logo &amp; Icon' %}
+  {% optional_navitem project.awards.count 'awards' 'Awards &amp; Recognition' %}
+  {% optional_navitem project.quotes.count 'quotes' 'Selected Articles' %}
+  {% optional_navitem project.additional_links.count 'quotes' 'Additional Links' %}
+  {% optional_navitem project.credits.count 'team' 'Team' %}
+  {% optional_navitem project 'contact' 'Contact' %}
 </ul>
 {% endblock %}{# navigation #}
 
 {% block pageend %}
-{% if company.analytics %}
+{% if project.analytics %}
 <script type="text/javascript">
   var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', '{{company.analytics}}']);
+  _gaq.push(['_setAccount', '{{project.analytics}}']);
   _gaq.push(['_trackPageview']);
 
   (function() {

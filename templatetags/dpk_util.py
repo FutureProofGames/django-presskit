@@ -1,5 +1,6 @@
 import markdown
 import re
+from urlparse import urlparse
 from django import template
 from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
@@ -29,3 +30,11 @@ def optional_navitem(item, anchor, title):
         'anchor': anchor,
         'title': title
     }
+
+@register.filter()
+def domain(value):
+    if not value:
+        return ''
+    if re.match(r'^(?:http|\/\/)', value):
+        return urlparse(value).netloc
+    return urlparse('//' + value).netloc

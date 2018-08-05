@@ -28,6 +28,9 @@ class Award(models.Model):
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_updated = models.DateTimeField(auto_now=True)
 
+    def __unicode__(self):
+        return self.description
+
 
 class Company(models.Model):
     title = models.CharField(max_length=200)
@@ -153,13 +156,13 @@ class Platform(models.Model):
 
 
 class Price(models.Model):
-    price = models.CharField(max_length=20)
+    price = models.CharField(max_length=200)
     project = models.ForeignKey('Project')
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_updated = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
-        return self.project + ' - ' + self.price
+        return self.project.title + ' - ' + self.price
 
 
 class Project(models.Model):
