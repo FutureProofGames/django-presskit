@@ -109,7 +109,7 @@
 {% if company.address %}
 <section>
   <h3>Address:</h3>
-  <p>{{company.address | markdown}}</p>
+  {{company.address | markdown}}
 </section>
 {% endif %}
 
@@ -142,7 +142,7 @@
   <section id="images">
     <h2>Images</h2>
     {% for image in company.images.all %}
-      <a href="{{ image.content.url }}""><img class="attached-image" src="{% thumbnail image.content 250x250 crop %}"></a>
+      <a href="{{ image.content.url }}"><img class="attached-image" src="{% thumbnail image.content 250x250 crop %}"></a>
     {% endfor %}
     <p>Many more images are available for {{company.title}}. <a href="#contact">Contact us</a> if you have a specific request!</p>
   </section>
