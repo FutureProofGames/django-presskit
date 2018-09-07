@@ -127,12 +127,15 @@
   <section id="videos">
     <h2>Videos</h2>
     <ul>
-    {% for video in company.videos %}
+    {% for video in company.videos.all %}
       <li>
-        {% if video.embed_url %}<a href="{{ video.embed_url }}"{% endif%}
-          {{ video.name }}
-        {% if video.embed_url %}</a>{% endif %}
+        <h3>{{ video.name }}</h3>
         {% if video.file %}(<a href="{{video.file.url}}" download>Download</a>){% endif %}
+        {% if video.embed_url %}
+          <div class="video-responsive">
+            <iframe src="{{ video.embed_url }}"></iframe>
+          </div>
+        {% endif%}
     {% endfor %}
     </ul>
   </section>
