@@ -145,13 +145,14 @@
       <a href="{{ image.content.url }}"><img class="attached-image" src="{% thumbnail image.content 250x250 crop %}"></a>
     {% endfor %}
     <p>Many more images are available for {{company.title}}. <a href="#contact">Contact us</a> if you have a specific request!</p>
+    <p><a href="{% url 'company_zip' company.id %}">Download as ZIP archive</a></p>
   </section>
 {% endif %}
 
 {% if company.logos.count %}
   <section id="logos">
     <h2>Logo &amp; Icon</h2>
-    {% for image in company.images.all %}
+    {% for image in company.logos.all %}
       <a href="{{ image.content.url }}"><img class="attached-image" src="{% thumbnail image.content 250x250 crop %}"></a>
     {% endfor %}
   </section>

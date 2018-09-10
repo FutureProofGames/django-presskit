@@ -1,8 +1,14 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.shortcuts import render
+import zipfile
+import os
+from io import BytesIO
+
 from django.conf import settings
+from django.http import HttpResponse
+from django.shortcuts import render
+from django.views.decorators.cache import cache_page
 
 from .models import Company, Project
 
@@ -25,3 +31,39 @@ def project(request, project_id):
       'project': project,
     }
     return render(request, 'django_presskit/project.html', context)
+
+
+## From https://stackoverflow.com/a/51655455
+def _zipresponse(filelist, zipfilename):
+    byte_data = BytesIO()
+    zip_file = zipfile.ZipFile(byte_data, "w")
+
+    for file in filelist:
+        filename = os.path.basename(os.path.normpath(file))
+        zip_file.write(file, filename)
+    zip_file.close()
+
+    response = HttpResponse(byte_data.getvalue(), content_type='application/zip')
+    response['Content-Disposition'] = 'attachment; filename="' + zipfilename + '.zip"'
+
+    return response
+
+
+@cache_page(60 * 15)
+def company_zip(request, company_id):
+    print "Generating ZIP!"
+    company = Company.objects.get(pk=company_id)
+    return _zipresponse(
+      (file.content.path for file in company.images.all()),
+      company.title
+    )
+
+
+@cache_page(60 * 15)
+def project_zip(request, project_id):
+    print "Generating ZIP!"
+    project = Project.objects.get(pk=project_id)
+    return _zipresponse(
+      (file.content.path for file in project.images.all()),
+      project.title
+    )
