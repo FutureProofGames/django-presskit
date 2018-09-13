@@ -6,13 +6,14 @@ from django.contrib import admin
 from .models import AdditionalLink, Attachment, Award, Company
 from .models import CompanyImageAttachment, Contact, Credit, Feature
 from .models import MonetizationPermission, Platform, Price, Project, Quote
-from .models import Social, Trailer, VideoType, ProjectImageAttachment
+from .models import Social, Trailer, CompanyVideo, ProjectImageAttachment
 from .models import ProjectLogoAttachment, CompanyLogoAttachment
 
 class CompanyImagesInline(admin.StackedInline):
     model = CompanyImageAttachment
     readonly_fields = ('datetime_created', 'datetime_updated',)
     extra = 1
+
 
 class ProjectImagesInline(admin.StackedInline):
     model = ProjectImageAttachment
@@ -25,6 +26,7 @@ class ProjectLogosInline(admin.StackedInline):
     readonly_fields = ('datetime_created', 'datetime_updated',)
     extra = 1
 
+
 class CompanyLogosInline(admin.StackedInline):
     model = CompanyLogoAttachment
     readonly_fields = ('datetime_created', 'datetime_updated',)
@@ -33,6 +35,12 @@ class CompanyLogosInline(admin.StackedInline):
 
 class SocialInline(admin.TabularInline):
     model = Social
+    readonly_fields = ('datetime_created', 'datetime_updated',)
+    extra = 1
+
+
+class CompanyVideoInline(admin.StackedInline):
+    model = CompanyVideo
     readonly_fields = ('datetime_created', 'datetime_updated',)
     extra = 1
 
@@ -53,7 +61,7 @@ class CompanyAdmin(admin.ModelAdmin):
     readonly_fields = ('datetime_created', 'datetime_updated',)
     filter_horizontal = (
         'additional_links', 'quotes', 'contacts', 'credits', 'awards')
-    inlines = [SocialInline, CompanyImagesInline, CompanyLogosInline]
+    inlines = [SocialInline, CompanyImagesInline, CompanyLogosInline, CompanyVideoInline]
 
 
 class ContactAdmin(admin.ModelAdmin):
@@ -86,23 +94,21 @@ class PriceInline(admin.TabularInline):
     extra = 1
 
 
+class TrailerInline(admin.StackedInline):
+    model = Trailer
+    readonly_fields = ('datetime_created', 'datetime_updated',)
+    extra = 1
+
+
 class ProjectAdmin(admin.ModelAdmin):
     readonly_fields = ('datetime_created', 'datetime_updated',)
     filter_horizontal = (
         'additional_links', 'quotes', 'contacts', 'credits', 'awards')
     inlines = [FeatureInline, PriceInline, PlatformInline,
-        ProjectLogosInline, ProjectImagesInline]
+        ProjectLogosInline, ProjectImagesInline, TrailerInline]
 
 
 class QuoteAdmin(admin.ModelAdmin):
-    readonly_fields = ('datetime_created', 'datetime_updated',)
-
-
-class TrailerAdmin(admin.ModelAdmin):
-    readonly_fields = ('datetime_created', 'datetime_updated',)
-
-
-class VideoTypeAdmin(admin.ModelAdmin):
     readonly_fields = ('datetime_created', 'datetime_updated',)
 
 
@@ -115,5 +121,3 @@ admin.site.register(Credit, CreditAdmin)
 admin.site.register(MonetizationPermission, MonetizationPermissionAdmin)
 admin.site.register(Project, ProjectAdmin)
 admin.site.register(Quote, QuoteAdmin)
-admin.site.register(Trailer, TrailerAdmin)
-admin.site.register(VideoType, VideoTypeAdmin)

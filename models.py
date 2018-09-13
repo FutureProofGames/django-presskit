@@ -70,6 +70,9 @@ class Company(models.Model):
     def __unicode__(self):
         return self.title
 
+    def get_absolute_url(self):
+        from django.urls import reverse
+        return reverse('company', kwargs={'company_id': self.id})
 
     class Meta:
         verbose_name_plural = 'companies'
@@ -94,8 +97,7 @@ class CompanyLogoAttachment(models.Model):
 class CompanyVideo(models.Model):
     name = models.CharField(max_length=400)
     company = models.ForeignKey(Company, related_name='videos')
-    video_type = models.ForeignKey('VideoType')
-    embed_url = models.URLField()
+    embed_url = models.URLField(null=True, blank=True)
     file = FilerFileField(null=True, blank=True,
                           related_name='company_video')
     datetime_created = models.DateTimeField(auto_now_add=True)
@@ -240,15 +242,9 @@ class Social(models.Model):
 
 class Trailer(models.Model):
     name = models.CharField(max_length=400)
-    video_type = models.ForeignKey('VideoType')
-    embed_url = models.URLField()
+    embed_url = models.URLField(null=True, blank=True)
+    project = models.ForeignKey(Project, related_name='videos')
     file = FilerFileField(null=True, blank=True,
                           related_name='trailer_video')
-    datetime_created = models.DateTimeField(auto_now_add=True)
-    datetime_updated = models.DateTimeField(auto_now=True)
-
-
-class VideoType(models.Model):
-    source = models.CharField(max_length=200)
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_updated = models.DateTimeField(auto_now=True)
