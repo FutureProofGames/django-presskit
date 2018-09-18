@@ -15,6 +15,7 @@ def presskit(request, company_id=None):
 
     company = Company.objects.get(pk=company_id)
     context = {
+      'request': request,
       'company': company,
     }
     return render(request, 'django_presskit/company.html', context)
@@ -22,6 +23,7 @@ def presskit(request, company_id=None):
 def project(request, project_id):
     project = Project.objects.get(pk=project_id)
     context = {
+      'request': request,
       'project': project,
     }
     return render(request, 'django_presskit/project.html', context)
