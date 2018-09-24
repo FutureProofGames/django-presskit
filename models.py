@@ -8,6 +8,7 @@ from filer.fields.image import FilerImageField
 
 class AdditionalLink(models.Model):
     title = models.CharField(max_length=200)
+    slug = models.SlugField(unique=True)
     description = models.TextField(null=True, blank=True)
     website = models.URLField()
     datetime_created = models.DateTimeField(auto_now_add=True)
@@ -34,6 +35,7 @@ class Award(models.Model):
 
 class Company(models.Model):
     title = models.CharField(max_length=200)
+    slug = models.SlugField(unique=True)
     website = models.URLField(null=True, blank=True)
     header_image = FilerImageField(null=True, blank=True,
                                    related_name='company_header_image')

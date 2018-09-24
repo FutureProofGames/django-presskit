@@ -6,21 +6,21 @@ from django.conf import settings
 
 from .models import Company, Project
 
-def presskit(request, company_id=None):
+def presskit(request, company_slug=None):
     if not company_id:
       try:
-        company_id = settings.DJANGO_PRESSKIT_DEFAULT_COMPANY_ID
+        company = Company.objects.get(settings.DJANGO_PRESSKIT_DEFAULT_COMPANY_ID)
       except:
         return render(request, 'django_presskit/no_default.html')
-
-    company = Company.objects.get(pk=company_id)
+    else:
+      company = Company.objects.get(slug=company_slug)
     context = {
       'company': company,
     }
     return render(request, 'django_presskit/company.html', context)
 
-def project(request, project_id):
-    project = Project.objects.get(pk=project_id)
+def project(request, project_slug):
+    project = Project.objects.get(slug=project_slug)
     context = {
       'project': project,
     }
