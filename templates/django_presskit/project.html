@@ -135,6 +135,7 @@
     {% for image in project.images.all %}
       <a href="{{ image.content.url }}"><img class="attached-image" src="{% thumbnail image.content 250x250 crop %}"></a>
     {% endfor %}
+    <p><a href="{% url 'project_zip' project.id %}">Download as ZIP archive</a></p>
   </section>
 {% endif %}
 
@@ -144,6 +145,7 @@
     {% for image in project.logos.all %}
       <a href="{{ image.content.url }}"><img class="attached-image" src="{% thumbnail image.content 250x250 crop %}"></a>
     {% endfor %}
+    <p><a href="{% url 'project_logo_zip' project.id %}">Download as ZIP archive</a></p>
   </section>
 {% endif %}
 
