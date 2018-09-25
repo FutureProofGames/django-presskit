@@ -155,6 +155,7 @@
     {% for image in company.logos.all %}
       <a href="{{ image.content.url }}"><img class="attached-image" src="{% thumbnail image.content 250x250 crop %}"></a>
     {% endfor %}
+    <p><a href="{% url 'company_logo_zip' company.id %}">Download as ZIP archive</a></p>
   </section>
 {% endif %}
 
