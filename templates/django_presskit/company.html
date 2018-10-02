@@ -39,7 +39,7 @@
 
     <ul class="projects-list">
       {% for project in company.project_set.all %}
-        <li><a href="{% url 'project' project.id %}">{{project.title}}</a></li>
+        <li><a href="{% url 'project' project.slug %}">{{project.title}}</a></li>
       {% endfor %}
     </ul>
   </section>
