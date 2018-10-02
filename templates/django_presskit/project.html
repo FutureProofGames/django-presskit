@@ -175,16 +175,18 @@
   </section>
 {% endif %}
 
+{% if project.distribute_key and project.distribute_access_hash %}
   <section id="request">
     <h2>Request Press Copy</h2>
     <p>Please fill in your e-mail address below to complete a distribute() request and we'll get back to you as soon as a press copy is available for you.</p>
-    <form id="pressrequest" class="uk-form" method="POST" action="https://dodistribute.com/access/add/{{project.distribute_access_hash}}">';
-      <input type="email" id="email" name="email" placeholder="name@yourdomain.com" style="width:100%;"></input>
+    <form id="pressrequest" method="post" action="https://dodistribute.com/access/add/{{project.distribute_access_hash}}/">
+      <input type="email" id="email" name="email" placeholder="name@yourdomain.com"></input>
       <input type="hidden" id="key" name="key" value="{{project.distribute_key}}"></input><br/>
-      <input type="submit" id="submit-button" value="Request a press copy" style="width:100%;"></input>
+      <input type="submit" id="submit-button" value="Request a press copy"></input>
     </form>
     <p>Alternatively, you can always request a press copy by <a href="#contact">sending us a quick email</a>.</p>
   </section>
+{% endif %}
 
 {% if project.additional_links.count %}
   <section id="additional-links">

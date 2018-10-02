@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.conf import settings
+from django.views.decorators.cache import cache_page
+from django.http import Http404
 
 from .models import Company, Project
 
@@ -27,8 +29,19 @@ def project(request, project_slug):
     }
     return render(request, 'django_presskit/project.html', context)
 
-def project_xml(request, project_id):
-    project = Project.objects.get()
+def project_xml(request, project_slug):
+    project = Project.objects.get(slug=project_slug)
+    context = {
+      'project': project,
+    }
+    return render(request, 'django_presskit/data.xml', context, content_type='text/xml')
+
+def project_header(request, project_slug):
+    project = Project.objects.get(slug=project_slug)
+    if project.header_image:
+      return redirect(project.header_image.url, permanent=True)
+    else:
+      raise Http404("No header image for this project.")
 
 ## From https://stackoverflow.com/a/51655455
 def _zipresponse(filelist, zipfilename):

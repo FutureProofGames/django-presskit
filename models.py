@@ -183,9 +183,12 @@ class Project(models.Model):
                                    related_name='project_logos')
     press_can_request_copy = models.BooleanField()
     monetization_permission = models.ForeignKey(MonetizationPermission)
-    distribute_game_id = models.CharField(max_length=25, help_text='The game ID from your Distribute() keyfile (https://dodistribute.com/games/presskit/THIS-ID/)')
-    distribute_access_hash = models.CharField(max_length=25, help_text='The access hash from your Distribute() keyfile (https://dodistribute.com/access/add/THIS-HASH/)')
-    distribute_key = models.CharField(max_length=80, help_text='The key from your Distribute() keyfile filename (ds_THIS-KEY)')
+    distribute_game_id = models.CharField(
+        null=True, blank=True, max_length=25, help_text='The game ID from your Distribute() keyfile (https://dodistribute.com/games/presskit/THIS-ID/)')
+    distribute_access_hash = models.CharField(
+        null=True, blank=True, max_length=25, help_text='The access hash from your Distribute() keyfile (https://dodistribute.com/access/add/THIS-HASH/)')
+    distribute_key = models.CharField(
+        null=True, blank=True, max_length=80, help_text='The key from your Distribute() keyfile filename (ds_THIS-KEY)')
     quotes = models.ManyToManyField('Quote', blank=True)
     additional_links = models.ManyToManyField(AdditionalLink,
                                               blank=True)
