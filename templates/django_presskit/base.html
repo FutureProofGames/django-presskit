@@ -2,12 +2,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="{% static "django_presskit/django_presskit.css" %}"/>
-    <title>{% block title %}Django Presskit{% endblock %}</title>
+  <meta content="text/html; charset=UTF-8" name="Content-Type" />
+  <link rel="stylesheet" href="{% static "django_presskit/django_presskit.css" %}"/>
+  <title>{% block title %}Django Presskit{% endblock %}</title>
+
+  {% block extra-head %}{% endblock %}
 </head>
 
 <body>
-
   <header class="page-header">
     {% block header %}{% endblock %}
   </header>

@@ -1,12 +1,165 @@
 {% extends "django_presskit/base.html" %}
 {% load dpk_util thumbnail %}
 
+{% block extra-head %}
+{% condense %}
+<meta property="og:title" content="{{company.title}}">
+<meta property="og:description" content="{{company.description | markdown  | striptags}}">
+{% if company.header_image %}
+  <meta property="og:image" content="{{ company.header_image.url }}">
+{% endif %}
+
+{% if company.logos.count %}
+  {% for image in company.logos.all %}
+    <meta property="og:image" content="{{image.content.url}}">
+  {% endfor %}
+{% endif %}
+
+{% if company.images.count %}
+  {% for image in company.images.all %}
+    <meta property="og:image" content="{{image.content.url}}">
+  {% endfor %}
+{% endif %}
+
+<meta property="og:url" content="{{request.build_absolute_uri}}">
+
+{% if company.videos.count %}
+  {% for video in company.videos.all %}
+    <meta property="og:video" content="{% firstOf video.file.url video.embed_url %}">
+  {% endfor %}
+{% endif %}
+
+<meta name="twitter:card" content="summary">
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org/",
+  "@type": "Organization",
+  "name": "{{company.title}}",
+  {% if company.website %}
+    "url": "{{company.website | with_protocol}}",
+  {% endif %}
+  "description": "{{company.description | markdown | striptags}}",
+  "email": "{{company.press_contact}}",
+
+  {% if company.project_set.count %}
+    "@reverse": { "author": [
+      {% for project in company.project_set.all %}
+        {
+          "@type": "CreativeWork",
+          "@id": "{% absolute_url 'project' project.id %}",
+          "name": "{{project.title}}"
+        }{% if not forloop.last %},{% endif %}
+      {% endfor %}
+    ]},
+  {% endif %}
+
+  {% if company.social_set.count %}
+    "sameas": [
+      {% for social in company.social_set.all %}
+        "{{social.website | with_protocol}}"{% if not forloop.last %},{% endif %}
+      {% endfor %}
+    ],
+  {% endif %}
+
+  "address": "{{company.address | markdown | striptags}}",
+  "telephone": "{{company.phone}}",
+
+  {% if company.videos.count or company.quotes.count %}
+    "subjectOf": [
+      {% for video in company.videos.all %}
+        {
+          "name": "{{video.name}}",
+          {% if video.file %}"contentUrl": "{{video.file.url}}",{% endif %}
+          {% if video.embed_url %}"embedUrl": "{{video.embed_url}}",{% endif %}
+          "@type": "VideoObject"
+        }{% if company.quotes.count or not forloop.last %},{% endif %}
+      {% endfor %}
+      {% for quote in company.quotes.all %}
+        {
+          "text": "{{quote.description | markdown | striptags}}",
+          "url": "{{quote.website | with_protocol}}",
+          "author": {
+            "name": "{{quote.reviewer}}",
+            "@type": "Person"
+          },
+          "publisher": {
+            "name": "{{quote.publication_name}}",
+            "@type": "Organization"
+          },
+          "@type": "Quotation"
+        }{% if not forloop.last %},{% endif %}
+      {% endfor %}
+    ],
+  {% endif %}
+
+  {% if company.images.count %}
+    "image": [
+      {% for image in company.images.all %}
+        "{{image.content.url}}"{% if not forloop.last %},{% endif %}
+      {% endfor %}
+    ],
+  {% endif %}
+
+  {% if company.logos.count %}
+    "logo": [
+      {% for logo in company.logos.all %}
+        "{{logo.content.url}}"{% if not forloop.last %},{% endif %}
+      {% endfor %}
+    ],
+  {% endif %}
+
+  {% if company.awards.count %}
+    "award": [
+      {% for award in company.awards.all %}
+        "{{award.description}}"{% if not forloop.last %},{% endif %}
+      {% endfor %}
+    ],
+  {% endif %}
+
+  {% if company.credits.count %}
+    "employee": [
+      {% for credit in company.credits.all %}
+        {
+          "name": "{{credit.person}}",
+          {% if credit.website %}
+            "url": "{{credit.website | with_protocol}}",
+          {% endif %}
+          "@type": "Person"
+        }{% if not forloop.last %},{% endif %}
+      {% endfor %}
+    ],
+  {% endif %}
+
+  {% if company.contacts.count %}
+    "contactPoint": [
+      {% for contact in company.contacts.all %}
+        {
+          "name": "{{contact.name}}",
+          {% if contact.website %}
+            "url": "{{contact.website | with_protocol}}",
+          {% endif %}
+          {% if contact.email %}
+            "email": "{{contact.email}}",
+          {% endif %}
+          "@type": "ContactPoint"
+        }{% if not forloop.last %},{% endif %}
+      {% endfor %}
+    ],
+  {% endif %}
+
+  "@id": "{{request.build_absolute_uri}}"
+}
+</script>
+{% endcondense %}
+{% endblock %}
+
 {% block title %}{{company.title}} Presskit{% endblock %}
 
 {% block identity %}
 <h1>{{company.title}}</h1>
 {% if company.website %}
-<a href="{{company.website | absolute_url}}" class="identity-link">{{company.website}}</a>
+<a href="{{company.website | with_protocol}}" class="identity-link">{{company.website}}</a>
 {% endif %}
 {% endblock %}
 
@@ -21,7 +174,9 @@
   <section id="description">
     <h2>Description</h2>
 
-    {{company.description | markdown}}
+    <div>
+      {{company.description | markdown}}
+    </div>
   </section>
 {% endif %}
 
@@ -54,11 +209,12 @@
   <h3>Developer:</h3>
   <p>
     {% if company.website %}
-      <a href="{{company.website | absolute_url}}">{{company.title}}</a>
+      <a href="{{company.website | with_protocol}}">{{company.title}}</a>
     {% else %}
       {{company.title}}
     {% endif%}
-    {% if company.based_in %}<br>Based in {{company.based_in}}{% endif %}
+    {% if company.based_in %}<br>Based in
+      <span>{{company.based_in}}</span>{% endif %}
   </p>
 </section>
 
@@ -89,7 +245,7 @@
 
   <ul class="social-links">
   {% for social in company.social_set.all %}
-    <li><a href="{{social.website | absolute_url}}">{{social.name}}</a></li>
+    <li><a href="{{social.website | with_protocol}}">{{social.name}}</a></li>
   {% endfor %}
   </ul>
 </section>
@@ -109,7 +265,9 @@
 {% if company.address %}
 <section>
   <h3>Address:</h3>
-  {{company.address | markdown}}
+  {% spaceless %}
+  <div>{{company.address | markdown}}</div>
+  {% endspaceless %}
 </section>
 {% endif %}
 
@@ -180,7 +338,7 @@
       <blockquote class="quotation quotation--company">
         {{quote.description | markdown}}
         <cite>
-          <a href="{{quote.website | absolute_url}}">
+          <a href="{{quote.website | with_protocol}}">
             {{quote.reviewer}},
             <span class='quotation__publication'>{{quote.publication_name}}</span>
           </a>
@@ -199,7 +357,7 @@
     <section class="credit">
       <h3>{{credit.person}}</h3>
       {% if credit.website or credit.role %}
-        {% if credit.website %}<a href="{{credit.website | absolute_url}}">{% endif %}
+        {% if credit.website %}<a href="{{credit.website | with_protocol}}">{% endif %}
           {{ credit.role|default:"Website" }}
         {% if credit.website %}</a>{% endif %}
       {% endif %}
@@ -212,15 +370,17 @@
 <section id="contact">
   <h2>Contact</h2>
   {% for contact in company.contacts.all %}
+  <div>
     <h3>{{contact.name}}</h3>
 
     {% if contact.website %}
-      <p><a href="{{contact.website | absolute_url}}">{{contact.website}}</a></p>
+      <p><a href="{{contact.website | with_protocol}}">{{contact.website}}</a></p>
     {% endif %}
 
     {% if contact.email %}
-      <p><a href="{{contact.email | absolute_url}}">{{contact.email}}</a></p>
+      <p><a href="mailto:{{contact.email}}">{{contact.email}}</a></p>
     {% endif %}
+  </div>
   {% endfor %}
 </section>
 {% endif %}

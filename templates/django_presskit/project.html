@@ -1,6 +1,160 @@
 {% extends "django_presskit/base.html" %}
 {% load dpk_util thumbnail %}
 
+{% block extra-head %}
+{% condense %}
+<meta property="og:title" content="{{product.title}}">
+<meta property="og:description" content="{{product.description | markdown | striptags}}">
+{% if product.header_image %}
+  <meta property="og:image" content="{{ product.header_image.url }}">
+{% endif %}
+
+{% if product.logos.count %}
+  {% for image in product.logos.all %}
+    <meta property="og:image" content="{{image.content.url}}">
+  {% endfor %}
+{% endif %}
+
+{% if product.images.count %}
+  {% for image in product.images.all %}
+    <meta property="og:image" content="{{image.content.url}}">
+  {% endfor %}
+{% endif %}
+
+<meta property="og:url" content="{{request.build_absolute_uri}}">
+
+{% if product.videos.count %}
+  {% for video in product.videos.all %}
+    <meta property="og:video" content="{% firstOf video.file.url video.embed_url %}">
+  {% endfor %}
+{% endif %}
+
+<meta name="twitter:card" content="summary">
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org/",
+  "@type": "CreativeWork",
+  "additionalType": "Product",
+  "name": "{{project.title}}",
+  "description": "{{project.description | markdown | striptags}}",
+
+  {% if project.website %}
+    "url": "{{project.website | with_protocol}}",
+  {% endif %}
+
+  "author": {
+    "@type": "Organization",
+    {% if project.company.website %}
+      "url": "{{project.company.website | with_protocol}}",
+    {% endif %}
+    "name": "{{project.company.title}}"
+  },
+
+  {% if project.feature_set.count %}
+    "additionalProperty": [
+      {% for feature in project.feature_set.all %}
+        {
+          "description": "{{feature.description | markdown | striptags}}",
+          "@type": "PropertyValue"
+        }{% if not forloop.last %},{% endif %}
+      {% endfor %}
+    ],
+  {% endif %}
+
+  {% if project.price_set.count %}
+    "offer": [
+      {% for price in project.price_set.all %}
+        {
+          "description": "{{price.price}}",
+          "@type": "Offer"
+        }{% if not forloop.last %},{% endif %}
+      {% endfor %}
+    ],
+  {% endif %}
+
+  {% if project.videos.count %}
+    "video": [
+      {% for video in project.videos.all %}
+        {
+          "name": "{{video.name}}",
+          {% if video.file %}"contentUrl": "{{video.file.url}}",{% endif %}
+          {% if video.embed_url %}"embedUrl": "{{video.embed_url}}",{% endif %}
+          "@type": "VideoObject"
+        }{% if not forloop.last %},{% endif %}
+      {% endfor %}
+    ],
+  {% endif %}
+
+  {% if project.images.count %}
+    "image": [
+      {% for image in project.images.all %}
+        "{{image.content.url}}"{% if not forloop.last %},{% endif %}
+      {% endfor %}
+    ],
+  {% endif %}
+
+  {% if project.logos.count %}
+    "logo": [
+      {% for logo in project.logos.all %}
+        "{{logo.content.url}}"{% if not forloop.last %},{% endif %}
+      {% endfor %}
+    ],
+  {% endif %}
+
+  {% if project.quotes.count %}
+    "review": [
+      {% for quote in project.quotes.all %}
+        {
+          "description": "{{quote.description | markdown | striptags}}",
+          "url": "{{quote.website | with_protocol}}",
+          "author": {
+            "name": "{{quote.reviewer}}",
+            "@type": "Person"
+          },
+          "publisher": {
+            "name": "{{quote.publication_name}}",
+            "@type": "Organization"
+          },
+          "@type": "Review"
+        }{% if not forloop.last %},{% endif %}
+      {% endfor %}
+    ],
+  {% endif %}
+
+  {% if project.additional_links.count %}
+    "subjectOf": [
+      {% for link in project.additional_links.all %}
+        {
+          "name": "{{link.title}}",
+          "description": "{{link.description}}",
+          "url": "{{link.website | with_protocol}}",
+          "@type": "WebPage"
+        }{% if not forloop.last %},{% endif %}
+      {% endfor %}
+    ],
+  {% endif %}
+
+  {% if project.credits.count %}
+    "contributor": [
+      {% for credit in project.credits.all %}
+        {
+          "name": "{{credit.person}}",
+          {% if credit.website %}
+            "url": "{{credit.website | with_protocol}}",
+          {% endif %}
+          "@type": "Person"
+        }{% if not forloop.last %},{% endif %}
+      {% endfor %}
+    ],
+  {% endif %}
+
+  "@id": "{{request.build_absolute_uri}}"
+}
+{% endcondense %}
+</script>
+{% endblock %}
+
 {% block title %}{{project.title}} Presskit{% endblock %}
 
 {% block identity %}
@@ -43,18 +197,6 @@
   </section>
 {% endif %}
 
-{% if project.project_set.count %}
-  <section id="projects">
-    <h2>Projects</h2>
-
-    <ul class="projects-list">
-      {% for project in project.project_set.all %}
-        <li><a href="{% url 'project' project.id %}">{{project.title}}</a></li>
-      {% endfor %}
-    </ul>
-  </section>
-{% endif %}
-
 {% endblock %}{# above-fold #}
 
 {% block factsheet %}
@@ -64,7 +206,7 @@
   <h3>Developer:</h3>
   <p>
     {% if project.company.website %}
-      <a href="{{project.company.website | absolute_url}}">{{project.company.title}}</a>
+      <a href="{{project.company.website | with_protocol}}">{{project.company.title}}</a>
     {% else %}
       {{project.company.title}}
     {% endif%}
@@ -167,7 +309,7 @@
       <blockquote class="quotation quotation--project">
         {{quote.description | markdown}}
         <cite>
-          <a href="{{quote.website | absolute_url}}">
+          <a href="{{quote.website | with_protocol}}">
             {{quote.reviewer}},
             <span class='quotation__publication'>{{quote.publication_name}}</span>
           </a>
@@ -196,7 +338,7 @@
     {% for link in project.additional_links.all %}
       <h3 class="additional-links">{{link.title}}</h3>
 
-      <p>{{link.description}} <a href="{{link.website | absolute_url}}">{{link.website | domain}}</a></p>
+      <p>{{link.description}} <a href="{{link.website | with_protocol}}">{{link.website | domain}}</a></p>
     {% endfor %}
   </section>
 {% endif %}
@@ -210,7 +352,7 @@
     <section class="credit">
       <h3>{{credit.person}}</h3>
       {% if credit.website or credit.role %}
-        {% if credit.website %}<a href="{{credit.website | absolute_url}}">{% endif %}
+        {% if credit.website %}<a href="{{credit.website | with_protocol}}">{% endif %}
           {{ credit.role|default:"Website" }}
         {% if credit.website %}</a>{% endif %}
       {% endif %}
@@ -226,11 +368,11 @@
     <h3>{{contact.name}}</h3>
 
     {% if contact.website %}
-      <p><a href="{{contact.website | absolute_url}}">{{contact.website}}</a></p>
+      <p><a href="{{contact.website | with_protocol}}">{{contact.website}}</a></p>
     {% endif %}
 
     {% if contact.email %}
-      <p><a href="{{contact.email | absolute_url}}">{{contact.email}}</a></p>
+      <p><a href="{{contact.email | with_protocol}}">{{contact.email}}</a></p>
     {% endif %}
   {% endfor %}
 </section>
