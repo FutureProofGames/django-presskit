@@ -8,6 +8,7 @@ from filer.fields.image import FilerImageField
 
 class AdditionalLink(models.Model):
     title = models.CharField(max_length=200)
+    slug = models.SlugField(unique=True)
     description = models.TextField(null=True, blank=True)
     website = models.URLField()
     datetime_created = models.DateTimeField(auto_now_add=True)
@@ -34,6 +35,7 @@ class Award(models.Model):
 
 class Company(models.Model):
     title = models.CharField(max_length=200)
+    slug = models.SlugField(unique=True)
     website = models.URLField(null=True, blank=True)
     header_image = FilerImageField(null=True, blank=True,
                                    related_name='company_header_image')
@@ -42,9 +44,6 @@ class Company(models.Model):
     history = models.TextField(null=True, blank=True)
     analytics = models.CharField(max_length=200, null=True, blank=True,
                                  help_text='Your Google Analytics ID')
-    promoter_id = models.CharField(
-        max_length=20, null=True, blank=True,
-        help_text='A product ID in Promoter with quotes for your company')
     founding_date = models.CharField(max_length=200, null=True,
                                      blank=True)
     press_contact = models.EmailField(
@@ -169,6 +168,7 @@ class Price(models.Model):
 
 class Project(models.Model):
     title = models.CharField(max_length=200)
+    slug = models.SlugField(unique=True)
     header_image = FilerImageField(null=True, blank=True,
                                    related_name='project_header_image')
     release_date = models.CharField(max_length=200)
@@ -183,9 +183,9 @@ class Project(models.Model):
                                    related_name='project_logos')
     press_can_request_copy = models.BooleanField()
     monetization_permission = models.ForeignKey(MonetizationPermission)
-    promoter_id = models.CharField(max_length=20, null=True, blank=True)
-    distribute_keyfile = FilerFileField(null=True, blank=True,
-                                        related_name='project_distribute_keyfile')
+    distribute_game_id = models.CharField(max_length=25, help_text='The game ID from your Distribute() keyfile (https://dodistribute.com/games/presskit/THIS-ID/)')
+    distribute_access_hash = models.CharField(max_length=25, help_text='The access hash from your Distribute() keyfile (https://dodistribute.com/access/add/THIS-HASH/)')
+    distribute_key = models.CharField(max_length=80, help_text='The key from your Distribute() keyfile filename (ds_THIS-KEY)')
     quotes = models.ManyToManyField('Quote', blank=True)
     additional_links = models.ManyToManyField(AdditionalLink,
                                               blank=True)

@@ -12,26 +12,29 @@ from django.views.decorators.cache import cache_page
 
 from .models import Company, Project
 
-def presskit(request, company_id=None):
-    if not company_id:
+def presskit(request, company_slug=None):
+    if not company_slug:
       try:
-        company_id = settings.DJANGO_PRESSKIT_DEFAULT_COMPANY_ID
-      except:
+        company = Company.objects.get(pk=settings.DJANGO_PRESSKIT_DEFAULT_COMPANY_ID)
+      except Exception as e:
+        print e
         return render(request, 'django_presskit/no_default.html')
-
-    company = Company.objects.get(pk=company_id)
+    else:
+      company = Company.objects.get(slug=company_slug)
     context = {
       'company': company,
     }
     return render(request, 'django_presskit/company.html', context)
 
-def project(request, project_id):
-    project = Project.objects.get(pk=project_id)
+def project(request, project_slug):
+    project = Project.objects.get(slug=project_slug)
     context = {
       'project': project,
     }
     return render(request, 'django_presskit/project.html', context)
 
+def project_xml(request, project_id):
+    project = Project.objects.get()
 
 ## From https://stackoverflow.com/a/51655455
 def _zipresponse(filelist, zipfilename):
@@ -51,7 +54,6 @@ def _zipresponse(filelist, zipfilename):
 
 @cache_page(60 * 15)
 def company_zip(request, company_id):
-    print "Generating ZIP!"
     company = Company.objects.get(pk=company_id)
     return _zipresponse(
       (file.content.path for file in company.images.all()),
@@ -61,7 +63,6 @@ def company_zip(request, company_id):
 
 @cache_page(60 * 15)
 def company_logo_zip(request, company_id):
-    print "Generating ZIP!"
     company = Company.objects.get(pk=company_id)
     return _zipresponse(
       (file.content.path for file in company.logos.all()),
@@ -71,7 +72,6 @@ def company_logo_zip(request, company_id):
 
 @cache_page(60 * 15)
 def project_zip(request, project_id):
-    print "Generating ZIP!"
     project = Project.objects.get(pk=project_id)
     return _zipresponse(
       (file.content.path for file in project.images.all()),
@@ -81,7 +81,6 @@ def project_zip(request, project_id):
 
 @cache_page(60 * 15)
 def project_logo_zip(request, project_id):
-    print "Generating ZIP!"
     project = Project.objects.get(pk=project_id)
     return _zipresponse(
       (file.content.path for file in project.logos.all()),

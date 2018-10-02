@@ -62,6 +62,7 @@ class CompanyAdmin(admin.ModelAdmin):
     filter_horizontal = (
         'additional_links', 'quotes', 'contacts', 'credits', 'awards')
     inlines = [SocialInline, CompanyImagesInline, CompanyLogosInline, CompanyVideoInline]
+    prepopulated_fields = {"slug": ("title",)}
 
 
 class ContactAdmin(admin.ModelAdmin):
@@ -106,6 +107,7 @@ class ProjectAdmin(admin.ModelAdmin):
         'additional_links', 'quotes', 'contacts', 'credits', 'awards')
     inlines = [FeatureInline, PriceInline, PlatformInline,
         ProjectLogosInline, ProjectImagesInline, TrailerInline]
+    prepopulated_fields = {"slug": ("title",)}
 
 
 class QuoteAdmin(admin.ModelAdmin):

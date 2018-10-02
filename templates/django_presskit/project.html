@@ -177,6 +177,17 @@
   </section>
 {% endif %}
 
+  <section id="request">
+    <h2>Request Press Copy</h2>
+    <p>Please fill in your e-mail address below to complete a distribute() request and we'll get back to you as soon as a press copy is available for you.</p>
+    <form id="pressrequest" class="uk-form" method="POST" action="https://dodistribute.com/access/add/{{project.distribute_access_hash}}">';
+      <input type="email" id="email" name="email" placeholder="name@yourdomain.com" style="width:100%;"></input>
+      <input type="hidden" id="key" name="key" value="{{project.distribute_key}}"></input><br/>
+      <input type="submit" id="submit-button" value="Request a press copy" style="width:100%;"></input>
+    </form>
+    <p>Alternatively, you can always request a press copy by <a href="#contact">sending us a quick email</a>.</p>
+  </section>
+
 {% if project.additional_links.count %}
   <section id="additional-links">
     <h2>Additional Links</h2>
@@ -239,7 +250,8 @@
   {% optional_navitem project.logos.count 'logos' 'Logo &amp; Icon' %}
   {% optional_navitem project.awards.count 'awards' 'Awards &amp; Recognition' %}
   {% optional_navitem project.quotes.count 'quotes' 'Selected Articles' %}
-  {% optional_navitem project.additional_links.count 'quotes' 'Additional Links' %}
+  {% optional_navitem project.distribute_access_hash 'request' 'Request Press Copy' %}
+  {% optional_navitem project.additional_links.count 'additional-links' 'Additional Links' %}
   {% optional_navitem project.credits.count 'team' 'Team' %}
   {% optional_navitem project 'contact' 'Contact' %}
 </ul>
