@@ -256,7 +256,7 @@
   <h3>Releases:</h3>
   <ul class="releases-list">
     {% for project in company.project_set.all %}
-      <li><a href="{% url 'project' project.id %}">{{project.title}}</a></li>
+      <li><a href="{% url 'project' project.slug %}">{{project.title}}</a></li>
     {% endfor %}
   </ul>
 </section>
