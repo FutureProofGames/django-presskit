@@ -158,14 +158,17 @@
 {% block title %}{{project.title}} Presskit{% endblock %}
 
 {% block identity %}
-<h1>{{project.title}}</h1>
-<a href="{% url 'default' %}" class="identity-link">press kit</a>
+<a href="{% url 'default' %}" class="identity-link"><h1>{{project.company.title}} Presskit</h1></a>
 {% endblock %}
 
 {% block header %}
+<h1>
 {% if project.header_image %}
-  <img class="header-image" src="{{ project.header_image.url }}">
+  <img class="header-image" src="{{ project.header_image.url }}" alt="{{project.title}}">
+{% else %}
+  {{project.title}}
 {% endif %}
+</h1>
 {% endblock %}{# header #}
 
 {% block above-fold %}
@@ -201,6 +204,8 @@
 
 {% block factsheet %}
 <h2>Factsheet</h2>
+
+<h3>{{project.title}}</h3>
 
 <section>
   <h3>Developer:</h3>
@@ -325,7 +330,7 @@
     <p>Please fill in your e-mail address below to complete a distribute() request and we'll get back to you as soon as a press copy is available for you.</p>
     <form id="pressrequest" method="post" action="https://dodistribute.com/access/add/{{project.distribute_access_hash}}/">
       <input type="email" id="email" name="email" placeholder="name@yourdomain.com"></input>
-      <input type="hidden" id="key" name="key" value="{{project.distribute_key}}"></input><br/>
+      <input type="hidden" id="key" name="key" value="{{project.distribute_key}}"></input>
       <input type="submit" id="submit-button" value="Request a press copy"></input>
     </form>
     <p>Alternatively, you can always request a press copy by <a href="#contact">sending us a quick email</a>.</p>
