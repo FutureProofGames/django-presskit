@@ -47,7 +47,7 @@
       {% for project in company.project_set.all %}
         {
           "@type": "CreativeWork",
-          "@id": "{% absolute_url 'project' project.id %}",
+          "@id": "{% absolute_url 'project' project.slug %}",
           "name": "{{project.title}}"
         }{% if not forloop.last %},{% endif %}
       {% endfor %}
