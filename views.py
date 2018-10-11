@@ -66,8 +66,8 @@ def _zipresponse(filelist, zipfilename):
 
 
 @cache_page(60 * 15)
-def company_zip(request, company_id):
-    company = Company.objects.get(pk=company_id)
+def company_zip(request, company_slug):
+    company = Company.objects.get(slug=company_slug)
     return _zipresponse(
       (file.content.path for file in company.images.all()),
       company.title
@@ -75,8 +75,8 @@ def company_zip(request, company_id):
 
 
 @cache_page(60 * 15)
-def company_logo_zip(request, company_id):
-    company = Company.objects.get(pk=company_id)
+def company_logo_zip(request, company_slug):
+    company = Company.objects.get(slug=company_slug)
     return _zipresponse(
       (file.content.path for file in company.logos.all()),
       company.title
@@ -84,8 +84,8 @@ def company_logo_zip(request, company_id):
 
 
 @cache_page(60 * 15)
-def project_zip(request, project_id):
-    project = Project.objects.get(pk=project_id)
+def project_zip(request, project_slug):
+    project = Project.objects.get(slug=project_slug)
     return _zipresponse(
       (file.content.path for file in project.images.all()),
       project.title
@@ -93,8 +93,8 @@ def project_zip(request, project_id):
 
 
 @cache_page(60 * 15)
-def project_logo_zip(request, project_id):
-    project = Project.objects.get(pk=project_id)
+def project_logo_zip(request, project_slug):
+    project = Project.objects.get(slug=project_slug)
     return _zipresponse(
       (file.content.path for file in project.logos.all()),
       project.title
