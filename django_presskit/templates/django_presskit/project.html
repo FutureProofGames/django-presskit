@@ -1,0 +1,423 @@
+{% extends "django_presskit/base.html" %}
+{% load dpk_util thumbnail %}
+
+{% block extra-head %}
+{% condense %}
+<meta property="og:title" content="{{product.title}}">
+<meta property="og:description" content="{{product.description | markdown | striptags}}">
+{% if product.header_image %}
+  <meta property="og:image" content="{{ product.header_image.url }}">
+{% endif %}
+
+{% if product.logos.count %}
+  {% for image in product.logos.all %}
+    <meta property="og:image" content="{{image.content.url}}">
+  {% endfor %}
+{% endif %}
+
+{% if product.images.count %}
+  {% for image in product.images.all %}
+    <meta property="og:image" content="{{image.content.url}}">
+  {% endfor %}
+{% endif %}
+
+<meta property="og:url" content="{{request.build_absolute_uri}}">
+
+{% if product.videos.count %}
+  {% for video in product.videos.all %}
+    <meta property="og:video" content="{% firstof video.file.url video.embed_url %}">
+  {% endfor %}
+{% endif %}
+
+<meta name="twitter:card" content="summary">
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org/",
+  "@type": "CreativeWork",
+  "additionalType": "Product",
+  "name": "{{project.title}}",
+  "description": "{{project.description | markdown | striptags}}",
+
+  {% if project.website %}
+    "url": "{{project.website | with_protocol}}",
+  {% endif %}
+
+  "author": {
+    "@type": "Organization",
+    {% if project.company.website %}
+      "url": "{{project.company.website | with_protocol}}",
+    {% endif %}
+    "name": "{{project.company.title}}"
+  },
+
+  {% if project.feature_set.count %}
+    "additionalProperty": [
+      {% for feature in project.feature_set.all %}
+        {
+          "description": "{{feature.description | markdown | striptags}}",
+          "@type": "PropertyValue"
+        }{% if not forloop.last %},{% endif %}
+      {% endfor %}
+    ],
+  {% endif %}
+
+  {% if project.price_set.count %}
+    "offer": [
+      {% for price in project.price_set.all %}
+        {
+          "description": "{{price.price}}",
+          "@type": "Offer"
+        }{% if not forloop.last %},{% endif %}
+      {% endfor %}
+    ],
+  {% endif %}
+
+  {% if project.videos.count %}
+    "video": [
+      {% for video in project.videos.all %}
+        {
+          "name": "{{video.name}}",
+          {% if video.file %}"contentUrl": "{{video.file.url}}",{% endif %}
+          {% if video.embed_url %}"embedUrl": "{{video.embed_url}}",{% endif %}
+          "@type": "VideoObject"
+        }{% if not forloop.last %},{% endif %}
+      {% endfor %}
+    ],
+  {% endif %}
+
+  {% if project.images.count %}
+    "image": [
+      {% for image in project.images.all %}
+        "{{image.content.url}}"{% if not forloop.last %},{% endif %}
+      {% endfor %}
+    ],
+  {% endif %}
+
+  {% if project.logos.count %}
+    "logo": [
+      {% for logo in project.logos.all %}
+        "{{logo.content.url}}"{% if not forloop.last %},{% endif %}
+      {% endfor %}
+    ],
+  {% endif %}
+
+  {% if project.quotes.count %}
+    "review": [
+      {% for quote in project.quotes.all %}
+        {
+          "description": "{{quote.description | markdown | striptags}}",
+          "url": "{{quote.website | with_protocol}}",
+          "author": {
+            "name": "{{quote.reviewer}}",
+            "@type": "Person"
+          },
+          "publisher": {
+            "name": "{{quote.publication_name}}",
+            "@type": "Organization"
+          },
+          "@type": "Review"
+        }{% if not forloop.last %},{% endif %}
+      {% endfor %}
+    ],
+  {% endif %}
+
+  {% if project.additional_links.count %}
+    "subjectOf": [
+      {% for link in project.additional_links.all %}
+        {
+          "name": "{{link.title}}",
+          "description": "{{link.description}}",
+          "url": "{{link.website | with_protocol}}",
+          "@type": "WebPage"
+        }{% if not forloop.last %},{% endif %}
+      {% endfor %}
+    ],
+  {% endif %}
+
+  {% if project.credits.count %}
+    "contributor": [
+      {% for credit in project.credits.all %}
+        {
+          "name": "{{credit.person}}",
+          {% if credit.website %}
+            "url": "{{credit.website | with_protocol}}",
+          {% endif %}
+          "@type": "Person"
+        }{% if not forloop.last %},{% endif %}
+      {% endfor %}
+    ],
+  {% endif %}
+
+  "@id": "{{request.build_absolute_uri}}"
+}
+{% endcondense %}
+</script>
+{% endblock %}
+
+{% block title %}{{project.title}} Presskit{% endblock %}
+
+{% block identity %}
+<a href="{% url 'default' %}" class="identity-link"><h1>{{project.company.title}} Presskit</h1></a>
+{% endblock %}
+
+{% block header %}
+<h1>
+{% if project.header_image %}
+  <img class="header-image" src="{{ project.header_image.url }}" alt="{{project.title}}">
+{% else %}
+  {{project.title}}
+{% endif %}
+</h1>
+{% endblock %}{# header #}
+
+{% block above-fold %}
+{% if project.description %}
+  <section id="description">
+    <h2>Description</h2>
+
+    {{project.description | markdown}}
+  </section>
+{% endif %}
+
+{% if project.history %}
+  <section id="history">
+    <h2>History</h2>
+
+    {{project.history | markdown}}
+  </section>
+{% endif %}
+
+{% if project.feature_set.count %}
+  <section id="features">
+    <h2>Features</h2>
+
+    <ul class="feature-list">
+      {% for feature in project.feature_set.all %}
+        <li>{{feature.description | markdown}}</li>
+      {% endfor %}
+    </ul>
+  </section>
+{% endif %}
+
+{% endblock %}{# above-fold #}
+
+{% block factsheet %}
+<h2>Factsheet</h2>
+
+<h3>{{project.title}}</h3>
+
+<section>
+  <h3>Developer:</h3>
+  <p>
+    {% if project.company.website %}
+      <a href="{{project.company.website | with_protocol}}">{{project.company.title}}</a>
+    {% else %}
+      {{project.company.title}}
+    {% endif%}
+    {% if project.company.based_in %}<br>Based in {{project.company.based_in}}{% endif %}
+  </p>
+</section>
+
+{% if project.release_date %}
+<section>
+  <h3>Release Date:</h3>
+  <p>{{project.release_date}}</p>
+</section>
+{% endif %}
+
+{% if project.platform_set.count %}
+<section>
+  <h3>Platforms:</h3>
+  <ul>
+  {% for platform in project.platform_set.all %}
+    <li><a href="{{ platform.website }}">{{platform.name}}</a></li>
+  {% endfor %}
+  </ul>
+</section>
+{% endif %}
+
+{% if project.website %}
+<section>
+  <h3>Website:</h3>
+  <p><a href="{{project.website}}">{{project.website}}</a></p>
+</section>
+{% endif %}
+
+{% if project.price_set.count %}
+<section>
+  <h3>Regular Price:</h3>
+  <ul>
+  {% for price in project.price_set.all %}
+    <li>{{price.price}}</li>
+  {% endfor %}
+  </ul>
+</section>
+{% endif %}
+
+{% endblock %}{# factsheet #}
+
+{% block below-fold %}
+{% if project.videos.count %}
+  <section id="videos">
+    <h2>Videos</h2>
+    <ul>
+    {% for video in project.videos.all %}
+      <li>
+        <h3>{{ video.name }}</h3>
+        {% if video.file %}(<a href="{{video.file.url}}" download>Download</a>){% endif %}
+        {% if video.embed_url %}
+          <div class="video-responsive">
+            <iframe src="{{ video.embed_url }}"></iframe>
+          </div>
+        {% endif%}
+    {% endfor %}
+    </ul>
+  </section>
+{% endif %}
+
+{% if project.images.count %}
+  <section id="images">
+    <h2>Images</h2>
+    {% for image in project.images.all %}
+      <a href="{{ image.content.url }}"><img class="attached-image" src="{% thumbnail image.content 250x250 crop %}"></a>
+    {% endfor %}
+    <p><a href="{% url 'project_zip' project.slug %}">Download as ZIP archive</a></p>
+  </section>
+{% endif %}
+
+{% if project.logos.count %}
+  <section id="logos">
+    <h2>Logo &amp; Icon</h2>
+    {% for image in project.logos.all %}
+      <a href="{{ image.content.url }}"><img class="attached-image" src="{% thumbnail image.content 250x250 crop %}"></a>
+    {% endfor %}
+    <p><a href="{% url 'project_logo_zip' project.slug %}">Download as ZIP archive</a></p>
+  </section>
+{% endif %}
+
+{% if project.awards.count %}
+  <section id="awards">
+    <h2>Awards &amp; Recognition</h2>
+    <ul>
+    {% for award in project.awards.all %}
+      <li>{{award.description}} {% if award.info %}<cite>{{award.info}}</cite>{% endif %}</li>
+    {% endfor %}
+    </ul>
+  </section>
+{% endif %}
+
+{% if project.quotes.count %}
+  <section id="quotes">
+    <h2>Selected Articles</h2>
+    {% for quote in project.quotes.all %}
+      <blockquote class="quotation quotation--project">
+        {{quote.description | markdown}}
+        <cite>
+          <a href="{{quote.website | with_protocol}}">
+            {{quote.reviewer}},
+            <span class='quotation__publication'>{{quote.publication_name}}</span>
+          </a>
+        </cite>
+      </blockquote>
+    {% endfor %}
+  </section>
+{% endif %}
+
+{% if project.distribute_key and project.distribute_access_hash %}
+  <section id="request">
+    <h2>Request Press Copy</h2>
+    <p>Please fill in your e-mail address below to complete a distribute() request and we'll get back to you as soon as a press copy is available for you.</p>
+    <form id="pressrequest" method="post" action="https://dodistribute.com/access/add/{{project.distribute_access_hash}}/">
+      <input type="email" id="email" name="email" placeholder="name@yourdomain.com"></input>
+      <input type="hidden" id="key" name="key" value="{{project.distribute_key}}"></input>
+      <input type="submit" id="submit-button" value="Request a press copy"></input>
+    </form>
+    <p>Alternatively, you can always request a press copy by <a href="#contact">sending us a quick email</a>.</p>
+  </section>
+{% endif %}
+
+{% if project.additional_links.count %}
+  <section id="additional-links">
+    <h2>Additional Links</h2>
+    {% for link in project.additional_links.all %}
+      <h3 class="additional-links">{{link.title}}</h3>
+
+      <p>{{link.description}} <a href="{{link.website | with_protocol}}">{{link.website | domain}}</a></p>
+    {% endfor %}
+  </section>
+{% endif %}
+
+<div class="bottom-columns">
+
+{% if project.credits.count %}
+<section id="team">
+  <h2>{{project.title}} Credits</h2>
+  {% for credit in project.credits.all %}
+    <section class="credit">
+      <h3>{{credit.person}}</h3>
+      {% if credit.website or credit.role %}
+        {% if credit.website %}<a href="{{credit.website | with_protocol}}">{% endif %}
+          {{ credit.role|default:"Website" }}
+        {% if credit.website %}</a>{% endif %}
+      {% endif %}
+    </section>
+  {% endfor %}
+</section>
+{% endif %}
+
+{% if project.contacts.count %}
+<section id="contact">
+  <h2>Contact</h2>
+  {% for contact in project.contacts.all %}
+    <h3>{{contact.name}}</h3>
+
+    {% if contact.website %}
+      <p><a href="{{contact.website | with_protocol}}">{{contact.website}}</a></p>
+    {% endif %}
+
+    {% if contact.email %}
+      <p><a href="{{contact.email | with_protocol}}">{{contact.email}}</a></p>
+    {% endif %}
+  {% endfor %}
+</section>
+{% endif %}
+
+</div>
+
+{% endblock %}{# below-fold #}
+
+{% block navigation %}
+<ul class="main-navigation">
+  {% optional_navitem project 'factsheet' 'Factsheet' %}
+  {% optional_navitem project.description 'description' 'Description' %}
+  {% optional_navitem project.history 'history' 'History' %}
+  {% optional_navitem project.feature_set.count 'features' 'Features' %}
+  {% optional_navitem project.project_set.count 'projects' 'Projects' %}
+  {% optional_navitem project.videos.count 'videos' 'Videos' %}
+  {% optional_navitem project.images.count 'images' 'Images' %}
+  {% optional_navitem project.logos.count 'logos' 'Logo &amp; Icon' %}
+  {% optional_navitem project.awards.count 'awards' 'Awards &amp; Recognition' %}
+  {% optional_navitem project.quotes.count 'quotes' 'Selected Articles' %}
+  {% optional_navitem project.distribute_access_hash 'request' 'Request Press Copy' %}
+  {% optional_navitem project.additional_links.count 'additional-links' 'Additional Links' %}
+  {% optional_navitem project.credits.count 'team' 'Team' %}
+  {% optional_navitem project 'contact' 'Contact' %}
+</ul>
+{% endblock %}{# navigation #}
+
+{% block pageend %}
+{% if project.analytics %}
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', '{{project.analytics}}']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+{% endif %}
+{% endblock %}

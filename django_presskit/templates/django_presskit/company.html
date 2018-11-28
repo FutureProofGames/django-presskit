@@ -1,0 +1,422 @@
+{% extends "django_presskit/base.html" %}
+{% load dpk_util thumbnail %}
+
+{% block extra-head %}
+{% condense %}
+<meta property="og:title" content="{{company.title}}">
+<meta property="og:description" content="{{company.description | markdown  | striptags}}">
+{% if company.header_image %}
+  <meta property="og:image" content="{{ company.header_image.url }}">
+{% endif %}
+
+{% if company.logos.count %}
+  {% for image in company.logos.all %}
+    <meta property="og:image" content="{{image.content.url}}">
+  {% endfor %}
+{% endif %}
+
+{% if company.images.count %}
+  {% for image in company.images.all %}
+    <meta property="og:image" content="{{image.content.url}}">
+  {% endfor %}
+{% endif %}
+
+<meta property="og:url" content="{{request.build_absolute_uri}}">
+
+{% if company.videos.count %}
+  {% for video in company.videos.all %}
+    <meta property="og:video" content="{% firstof video.file.url video.embed_url %}">
+  {% endfor %}
+{% endif %}
+
+<meta name="twitter:card" content="summary">
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org/",
+  "@type": "Organization",
+  "name": "{{company.title}}",
+  {% if company.website %}
+    "url": "{{company.website | with_protocol}}",
+  {% endif %}
+  "description": "{{company.description | markdown | striptags}}",
+  "email": "{{company.press_contact}}",
+
+  {% if company.project_set.count %}
+    "@reverse": { "author": [
+      {% for project in company.project_set.all %}
+        {
+          "@type": "CreativeWork",
+          "@id": "{% absolute_url 'project' project.slug %}",
+          "name": "{{project.title}}"
+        }{% if not forloop.last %},{% endif %}
+      {% endfor %}
+    ]},
+  {% endif %}
+
+  {% if company.social_set.count %}
+    "sameas": [
+      {% for social in company.social_set.all %}
+        "{{social.website | with_protocol}}"{% if not forloop.last %},{% endif %}
+      {% endfor %}
+    ],
+  {% endif %}
+
+  "address": "{{company.address | markdown | striptags}}",
+  "telephone": "{{company.phone}}",
+
+  {% if company.videos.count or company.quotes.count %}
+    "subjectOf": [
+      {% for video in company.videos.all %}
+        {
+          "name": "{{video.name}}",
+          {% if video.file %}"contentUrl": "{{video.file.url}}",{% endif %}
+          {% if video.embed_url %}"embedUrl": "{{video.embed_url}}",{% endif %}
+          "@type": "VideoObject"
+        }{% if company.quotes.count or not forloop.last %},{% endif %}
+      {% endfor %}
+      {% for quote in company.quotes.all %}
+        {
+          "text": "{{quote.description | markdown | striptags}}",
+          "url": "{{quote.website | with_protocol}}",
+          "author": {
+            "name": "{{quote.reviewer}}",
+            "@type": "Person"
+          },
+          "publisher": {
+            "name": "{{quote.publication_name}}",
+            "@type": "Organization"
+          },
+          "@type": "Quotation"
+        }{% if not forloop.last %},{% endif %}
+      {% endfor %}
+    ],
+  {% endif %}
+
+  {% if company.images.count %}
+    "image": [
+      {% for image in company.images.all %}
+        "{{image.content.url}}"{% if not forloop.last %},{% endif %}
+      {% endfor %}
+    ],
+  {% endif %}
+
+  {% if company.logos.count %}
+    "logo": [
+      {% for logo in company.logos.all %}
+        "{{logo.content.url}}"{% if not forloop.last %},{% endif %}
+      {% endfor %}
+    ],
+  {% endif %}
+
+  {% if company.awards.count %}
+    "award": [
+      {% for award in company.awards.all %}
+        "{{award.description}}"{% if not forloop.last %},{% endif %}
+      {% endfor %}
+    ],
+  {% endif %}
+
+  {% if company.credits.count %}
+    "employee": [
+      {% for credit in company.credits.all %}
+        {
+          "name": "{{credit.person}}",
+          {% if credit.website %}
+            "url": "{{credit.website | with_protocol}}",
+          {% endif %}
+          "@type": "Person"
+        }{% if not forloop.last %},{% endif %}
+      {% endfor %}
+    ],
+  {% endif %}
+
+  {% if company.contacts.count %}
+    "contactPoint": [
+      {% for contact in company.contacts.all %}
+        {
+          "name": "{{contact.name}}",
+          {% if contact.website %}
+            "url": "{{contact.website | with_protocol}}",
+          {% endif %}
+          {% if contact.email %}
+            "email": "{{contact.email}}",
+          {% endif %}
+          "@type": "ContactPoint"
+        }{% if not forloop.last %},{% endif %}
+      {% endfor %}
+    ],
+  {% endif %}
+
+  "@id": "{{request.build_absolute_uri}}"
+}
+</script>
+{% endcondense %}
+{% endblock %}
+
+{% block title %}{{company.title}} Presskit{% endblock %}
+
+{% block identity %}
+<h1>{{company.title}}</h1>
+{% if company.website %}
+<a href="{{company.website | with_protocol}}" class="identity-link">{{company.website}}</a>
+{% endif %}
+{% endblock %}
+
+{% block header %}
+{% if company.header_image %}
+  <img class="header-image" src="{{ company.header_image.url }}">
+{% endif %}
+{% endblock %}{# header #}
+
+{% block above-fold %}
+{% if company.description %}
+  <section id="description">
+    <h2>Description</h2>
+
+    <div>
+      {{company.description | markdown}}
+    </div>
+  </section>
+{% endif %}
+
+{% if company.history %}
+  <section id="history">
+    <h2>History</h2>
+
+    {{company.history | markdown}}
+  </section>
+{% endif %}
+
+{% if company.project_set.count %}
+  <section id="projects">
+    <h2>Projects</h2>
+
+    <ul class="projects-list">
+      {% for project in company.project_set.all %}
+        <li><a href="{% url 'project' project.slug %}">{{project.title}}</a></li>
+      {% endfor %}
+    </ul>
+  </section>
+{% endif %}
+
+{% endblock %}{# above-fold #}
+
+{% block factsheet %}
+<h2>Factsheet</h2>
+
+<section>
+  <h3>Developer:</h3>
+  <p>
+    {% if company.website %}
+      <a href="{{company.website | with_protocol}}">{{company.title}}</a>
+    {% else %}
+      {{company.title}}
+    {% endif%}
+    {% if company.based_in %}<br>Based in
+      <span>{{company.based_in}}</span>{% endif %}
+  </p>
+</section>
+
+{% if company.founding_date %}
+<section>
+  <h3>Founding Date:</h3>
+  <p>{{company.founding_date}}</p>
+</section>
+{% endif %}
+
+{% if company.website %}
+<section>
+  <h3>Website:</h3>
+  <p><a href="{{company.website}}">{{company.website}}</a></p>
+</section>
+{% endif %}
+
+{% if company.press_contact %}
+<section>
+  <h3>Press / Business contact:</h3>
+  <p><a href="mailto:{{company.press_contact}}">{{company.press_contact}}</a></p>
+</section>
+{% endif %}
+
+{% if company.social_set.count %}
+<section>
+  <h3>Social:</h3>
+
+  <ul class="social-links">
+  {% for social in company.social_set.all %}
+    <li><a href="{{social.website | with_protocol}}">{{social.name}}</a></li>
+  {% endfor %}
+  </ul>
+</section>
+{% endif %}
+
+{% if company.project_set.count %}
+<section>
+  <h3>Releases:</h3>
+  <ul class="releases-list">
+    {% for project in company.project_set.all %}
+      <li><a href="{% url 'project' project.slug %}">{{project.title}}</a></li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
+
+{% if company.address %}
+<section>
+  <h3>Address:</h3>
+  {% spaceless %}
+  <div>{{company.address | markdown}}</div>
+  {% endspaceless %}
+</section>
+{% endif %}
+
+{% if company.phone %}
+<section>
+  <h3>Phone:</h3>
+  <p>{{company.phone}}</p>
+</section>
+{% endif %}
+
+{% endblock %}{# factsheet #}
+
+{% block below-fold %}
+{% if company.videos.count %}
+  <section id="videos">
+    <h2>Videos</h2>
+    <ul>
+    {% for video in company.videos.all %}
+      <li>
+        <h3>{{ video.name }}</h3>
+        {% if video.file %}(<a href="{{video.file.url}}" download>Download</a>){% endif %}
+        {% if video.embed_url %}
+          <div class="video-responsive">
+            <iframe src="{{ video.embed_url }}"></iframe>
+          </div>
+        {% endif%}
+    {% endfor %}
+    </ul>
+  </section>
+{% endif %}
+
+{% if company.images.count %}
+  <section id="images">
+    <h2>Images</h2>
+    {% for image in company.images.all %}
+      <a href="{{ image.content.url }}"><img class="attached-image" src="{% thumbnail image.content 250x250 crop %}"></a>
+    {% endfor %}
+    <p>Many more images are available for {{company.title}}. <a href="#contact">Contact us</a> if you have a specific request!</p>
+    <p><a href="{% url 'company_zip' company.slug %}">Download as ZIP archive</a></p>
+  </section>
+{% endif %}
+
+{% if company.logos.count %}
+  <section id="logos">
+    <h2>Logo &amp; Icon</h2>
+    {% for image in company.logos.all %}
+      <a href="{{ image.content.url }}"><img class="attached-image" src="{% thumbnail image.content 250x250 crop %}"></a>
+    {% endfor %}
+    <p><a href="{% url 'company_logo_zip' company.slug %}">Download as ZIP archive</a></p>
+  </section>
+{% endif %}
+
+{% if company.awards.count %}
+  <section id="awards">
+    <h2>Awards &amp; Recognition</h2>
+    <ul>
+    {% for award in company.awards.all %}
+      <li>{{award.description}} {% if award.info %}<cite>{{award.info}}</cite>{% endif %}</li>
+    {% endfor %}
+    </ul>
+  </section>
+{% endif %}
+
+{% if company.quotes.count %}
+  <section id="quotes">
+    <h2>Selected Articles</h2>
+    {% for quote in company.quotes.all %}
+      <blockquote class="quotation quotation--company">
+        {{quote.description | markdown}}
+        <cite>
+          <a href="{{quote.website | with_protocol}}">
+            {{quote.reviewer}},
+            <span class='quotation__publication'>{{quote.publication_name}}</span>
+          </a>
+        </cite>
+      </blockquote>
+    {% endfor %}
+  </section>
+{% endif %}
+
+<div class="bottom-columns">
+
+{% if company.credits.count %}
+<section id="team">
+  <h2>Team</h2>
+  {% for credit in company.credits.all %}
+    <section class="credit">
+      <h3>{{credit.person}}</h3>
+      {% if credit.website or credit.role %}
+        {% if credit.website %}<a href="{{credit.website | with_protocol}}">{% endif %}
+          {{ credit.role|default:"Website" }}
+        {% if credit.website %}</a>{% endif %}
+      {% endif %}
+    </section>
+  {% endfor %}
+</section>
+{% endif %}
+
+{% if company.contacts.count %}
+<section id="contact">
+  <h2>Contact</h2>
+  {% for contact in company.contacts.all %}
+  <div>
+    <h3>{{contact.name}}</h3>
+
+    {% if contact.website %}
+      <p><a href="{{contact.website | with_protocol}}">{{contact.website}}</a></p>
+    {% endif %}
+
+    {% if contact.email %}
+      <p><a href="mailto:{{contact.email}}">{{contact.email}}</a></p>
+    {% endif %}
+  </div>
+  {% endfor %}
+</section>
+{% endif %}
+
+</div>
+
+{% endblock %}{# below-fold #}
+
+{% block navigation %}
+<ul class="main-navigation">
+  {% optional_navitem company 'factsheet' 'Factsheet' %}
+  {% optional_navitem company.description 'description' 'Description' %}
+  {% optional_navitem company.history 'history' 'History' %}
+  {% optional_navitem company.project_set.count 'projects' 'Projects' %}
+  {% optional_navitem company.videos.count 'videos' 'Videos' %}
+  {% optional_navitem company.images.count 'images' 'Images' %}
+  {% optional_navitem company.logos.count 'logos' 'Logo &amp; Icon' %}
+  {% optional_navitem company.awards.count 'awards' 'Awards &amp; Recognition' %}
+  {% optional_navitem company.quotes.count 'quotes' 'Selected Articles' %}
+  {% optional_navitem company.credits.count 'team' 'Team' %}
+  {% optional_navitem company 'contact' 'Contact' %}
+</ul>
+{% endblock %}{# navigation #}
+
+{% block pageend %}
+{% if company.analytics %}
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', '{{company.analytics}}']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+{% endif %}
+{% endblock %}

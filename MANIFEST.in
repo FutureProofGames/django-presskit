@@ -1,0 +1,3 @@
+include README.md
+recursive-include django_presskit/static *
+recursive-include django_presskit/templates *

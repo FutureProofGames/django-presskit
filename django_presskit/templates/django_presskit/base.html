@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta content="text/html; charset=UTF-8" name="Content-Type" />
+  <link rel="stylesheet" href="{% static "django_presskit/django_presskit.css" %}"/>
+  <title>{% block title %}Django Presskit{% endblock %}</title>
+
+  {% block extra-head %}{% endblock %}
+</head>
+
+<body>
+  <header class="page-header">
+    {% block header %}{% endblock %}
+  </header>
+
+  <div class="identity">
+    {% block identity %}{% endblock %}
+  </div>
+
+  <div class="above-fold">
+    {% block above-fold %}{% endblock %}
+  </div>
+  <section class="factsheet" id="factsheet">
+    {% block factsheet %}{% endblock %}
+  </section>
+  <div class="below-fold">
+    {% block below-fold %}{% endblock %}
+  </div>
+
+  <nav class="navigation">
+    {% block navigation %}
+    {% endblock %}
+  </nav>
+
+  <footer class="page-footer">
+    {% block footer %}
+    <p>
+      Django Presskit by <a href="https://futureproofgames.com">Future Proof Games</a> •
+      Inspired by Rami Ismail's <a href="http://dopresskit.com/">presskit()</a>
+    </p>
+    {% endblock %}
+  </footer>
+
+  {% block pageend %}
+  {% endblock %}
+</body>
+</html>

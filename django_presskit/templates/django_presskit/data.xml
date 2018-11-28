@@ -1,0 +1,9 @@
+{% load dpk_util %}<?xml version="1.0" encoding="utf-8"?>
+
+<game>
+  <title>{{project.title}}</title>
+  <release-date>{{project.release_date}}</release-date>
+  <website>{{project.website}}</website>
+
+  <description>{{project.description | markdown | striptags}}</description>
+</game>
