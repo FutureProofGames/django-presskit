@@ -71,7 +71,7 @@ class Company(models.Model):
 
     def get_absolute_url(self):
         from django.urls import reverse
-        return reverse('company', kwargs={'company_id': self.id})
+        return reverse('django_presskit:company', kwargs={'company_slug': self.slug})
 
     class Meta:
         verbose_name_plural = 'companies'
@@ -199,6 +199,9 @@ class Project(models.Model):
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_updated = models.DateTimeField(auto_now=True)
 
+    def get_absolute_url(self):
+        from django.urls import reverse
+        return reverse('django_presskit:project', kwargs={'project_slug': self.slug})
 
     def __unicode__(self):
         return self.title

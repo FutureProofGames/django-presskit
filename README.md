@@ -6,6 +6,16 @@ Django < 2
 django-filer
 markdown
 
+## Installing
+
+Add "django_presskit" to your settings INSTALLED_APPS.
+
+Add `DJANGO_PRESSKIT_DEFAULT_COMPANY_ID = 1` to your settings file.
+
+In your main urls.py, add a line like: `url(r'^presskit/', include('django_presskit.urls', namespace='django_presskit')),`
+
+All data can be set up in the Django admin.
+
 ## Converting from presskit()/dopresskit
 
 If you are switching from Rami Ismail's presskit(), you'll want to make sure any old URLs that are floating around continue to work. Presskit() URLs look like `/presskit/sheet.php?p=exploit_zero_day`. You'll want to convert those into something like `/presskit/exploit-zero-day/`.
