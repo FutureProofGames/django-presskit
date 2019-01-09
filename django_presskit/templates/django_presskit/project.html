@@ -158,7 +158,7 @@
 {% block title %}{{project.title}} Presskit{% endblock %}
 
 {% block identity %}
-<a href="{% url 'default' %}" class="identity-link"><h1>{{project.company.title}} Presskit</h1></a>
+<a href="{% url 'django_presskit:default' %}" class="identity-link"><h1>{{project.company.title}} Presskit</h1></a>
 {% endblock %}
 
 {% block header %}
@@ -282,7 +282,7 @@
     {% for image in project.images.all %}
       <a href="{{ image.content.url }}"><img class="attached-image" src="{% thumbnail image.content 250x250 crop %}"></a>
     {% endfor %}
-    <p><a href="{% url 'project_zip' project.slug %}">Download as ZIP archive</a></p>
+    <p><a href="{% url 'django_presskit:project_zip' project.slug %}">Download as ZIP archive</a></p>
   </section>
 {% endif %}
 
@@ -292,7 +292,7 @@
     {% for image in project.logos.all %}
       <a href="{{ image.content.url }}"><img class="attached-image" src="{% thumbnail image.content 250x250 crop %}"></a>
     {% endfor %}
-    <p><a href="{% url 'project_logo_zip' project.slug %}">Download as ZIP archive</a></p>
+    <p><a href="{% url 'django_presskit:project_logo_zip' project.slug %}">Download as ZIP archive</a></p>
   </section>
 {% endif %}
 
