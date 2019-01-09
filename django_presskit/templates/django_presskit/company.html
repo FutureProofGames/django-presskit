@@ -47,7 +47,7 @@
       {% for project in company.project_set.all %}
         {
           "@type": "CreativeWork",
-          "@id": "{% absolute_url 'project' project.slug %}",
+          "@id": "{% absolute_url 'django_presskit:project' project.slug %}",
           "name": "{{project.title}}"
         }{% if not forloop.last %},{% endif %}
       {% endfor %}
