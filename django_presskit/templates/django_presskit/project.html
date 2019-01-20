@@ -282,7 +282,9 @@
     {% for image in project.images.all %}
       <a href="{{ image.content.url }}"><img class="attached-image" src="{% thumbnail image.content 250x250 crop %}"></a>
     {% endfor %}
-    <p><a href="{% url 'django_presskit:project_zip' project.slug %}">Download as ZIP archive</a></p>
+    {% if project.asset_archive %}
+      <p><a href="{{project.asset_archive.url}}" download>Download Archive</a></p>
+    {% endif %}
   </section>
 {% endif %}
 
@@ -292,7 +294,6 @@
     {% for image in project.logos.all %}
       <a href="{{ image.content.url }}"><img class="attached-image" src="{% thumbnail image.content 250x250 crop %}"></a>
     {% endfor %}
-    <p><a href="{% url 'django_presskit:project_logo_zip' project.slug %}">Download as ZIP archive</a></p>
   </section>
 {% endif %}
 

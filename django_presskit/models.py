@@ -65,6 +65,7 @@ class Company(models.Model):
     contacts = models.ManyToManyField('Contact', blank=True)
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_updated = models.DateTimeField(auto_now=True)
+    asset_archive = models.FilerFileField(blank=True,null=True)
 
     def __unicode__(self):
         return self.title
@@ -198,6 +199,7 @@ class Project(models.Model):
     company = models.ForeignKey(Company)
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_updated = models.DateTimeField(auto_now=True)
+    asset_archive = models.FilerFileField(blank=True,null=True)
 
     def get_absolute_url(self):
         from django.urls import reverse
