@@ -47,6 +47,7 @@ class CompanyVideoInline(admin.StackedInline):
 
 class AdditionalLinkAdmin(admin.ModelAdmin):
     readonly_fields = ('datetime_created', 'datetime_updated',)
+    prepopulated_fields = {"slug": ("title",)}
 
 
 class AttachmentAdmin(admin.ModelAdmin):
