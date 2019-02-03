@@ -103,7 +103,7 @@ class TrailerInline(SortableInlineAdminMixin, admin.StackedInline):
     extra = 1
 
 
-class ProjectAdmin(SortableAdminMixin):
+class ProjectAdmin(SortableAdminMixin, admin.ModelAdmin):
     readonly_fields = ('datetime_created', 'datetime_updated',)
     filter_horizontal = (
         'additional_links', 'quotes', 'contacts', 'credits', 'awards')
