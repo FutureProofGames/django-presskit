@@ -5,10 +5,11 @@ Requirements:
 Django < 2
 django-filer
 markdown
+django-admin-sortable2
 
 ## Installing
 
-Add "django_presskit" to your settings INSTALLED_APPS.
+Add "django_presskit" and "adminsortable2" to your settings.py INSTALLED_APPS.
 
 Add `DJANGO_PRESSKIT_DEFAULT_COMPANY_ID = 1` to your settings file.
 
