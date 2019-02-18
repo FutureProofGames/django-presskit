@@ -71,5 +71,4 @@ class AbsoluteUrlTagTests(TestCase):
         c = Client()
         response = c.get(reverse('django_presskit:company', kwargs={'company_slug': 'test-company'}))
         expected = '"@id": "http://testserver/projects/test-project/"'
-        print response.content
         self.assertContains(response, expected)
