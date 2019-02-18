@@ -1,12 +1,17 @@
 # django-presskit
 A port of Rami Ismail's presskit()/dopresskit to Django.
 
-Requirements:
-* Django < 2
-* django-filer
-* markdown
+[![Build Status](https://travis-ci.com/FutureProofGames/django_presskit.svg?branch=develop)](https://travis-ci.com/FutureProofGames/django_presskit)
 
 ## Installing
+
+### Requirements:
+
+* Django==1.11.x
+* django-filer
+* easy_thumbnails
+* Markdown
+* Pillow
 
 Add "django_presskit" to your settings INSTALLED_APPS.
 

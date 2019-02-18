@@ -5,4 +5,4 @@ install:
   - pip install -r requirements.txt
   - python setup.py install
 script:
-  - coverage run runtests.py
+  - python runtests.py
