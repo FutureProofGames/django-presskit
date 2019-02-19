@@ -1,4 +1,6 @@
 language: python
+env:
+    PYTHONPATH: .
 python:
   - "2.7"
 install:
