@@ -15,7 +15,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 2.7",
-        "Framework :: Django :: 1.11",
+        "Framework :: Django :: 1.9",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
