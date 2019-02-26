@@ -46,7 +46,7 @@ class CompanyVideoInline(SortableInlineAdminMixin, admin.StackedInline):
     extra = 1
 
 
-class AdditionalLinkAdmin(admin.ModelAdmin):
+class AdditionalLinkAdmin(SortableAdminMixin, admin.ModelAdmin):
     readonly_fields = ('datetime_created', 'datetime_updated',)
     prepopulated_fields = {"slug": ("title",)}
 
@@ -55,7 +55,7 @@ class AttachmentAdmin(admin.ModelAdmin):
     pass
 
 
-class AwardAdmin(admin.ModelAdmin):
+class AwardAdmin(SortableAdminMixin, admin.ModelAdmin):
     readonly_fields = ('datetime_created', 'datetime_updated',)
 
 
@@ -67,11 +67,11 @@ class CompanyAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("title",)}
 
 
-class ContactAdmin(admin.ModelAdmin):
+class ContactAdmin(SortableAdminMixin, admin.ModelAdmin):
     readonly_fields = ('datetime_created', 'datetime_updated',)
 
 
-class CreditAdmin(admin.ModelAdmin):
+class CreditAdmin(SortableAdminMixin, admin.ModelAdmin):
     readonly_fields = ('datetime_created', 'datetime_updated',)
 
 
@@ -112,7 +112,7 @@ class ProjectAdmin(SortableAdminMixin, admin.ModelAdmin):
     prepopulated_fields = {"slug": ("title",)}
 
 
-class QuoteAdmin(admin.ModelAdmin):
+class QuoteAdmin(SortableAdminMixin, admin.ModelAdmin):
     readonly_fields = ('datetime_created', 'datetime_updated',)
 
 
