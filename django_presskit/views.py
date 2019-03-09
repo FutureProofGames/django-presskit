@@ -12,12 +12,21 @@ from django.views.decorators.cache import cache_page
 
 from .models import Company, Project
 
+def fallback(func):
+  def decorator(*args, **kwargs):
+    try:
+      return func(*args, **kwargs)
+    except (Company.DoesNotExist, Project.DoesNotExist) as e:
+      return redirect('django_presskit:default')
+
+  return decorator
+
+@fallback
 def presskit(request, company_slug=None):
     if not company_slug:
       try:
         company = Company.objects.get(pk=settings.DJANGO_PRESSKIT_DEFAULT_COMPANY_ID)
       except Exception as e:
-        print e
         return render(request, 'django_presskit/no_default.html')
     else:
       company = Company.objects.get(slug=company_slug)
@@ -27,6 +36,7 @@ def presskit(request, company_slug=None):
     }
     return render(request, 'django_presskit/company.html', context)
 
+@fallback
 def project(request, project_slug):
     project = Project.objects.get(slug=project_slug)
     context = {

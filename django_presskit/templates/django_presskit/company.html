@@ -47,7 +47,7 @@
       {% for project in company.project_set.all %}
         {
           "@type": "CreativeWork",
-          "@id": "{% absolute_url 'project' project.slug %}",
+          "@id": "{% absolute_url 'django_presskit:project' project.slug %}",
           "name": "{{project.title}}"
         }{% if not forloop.last %},{% endif %}
       {% endfor %}
@@ -194,7 +194,7 @@
 
     <ul class="projects-list">
       {% for project in company.project_set.all %}
-        <li><a href="{% url 'project' project.slug %}">{{project.title}}</a></li>
+        <li><a href="{% url 'django_presskit:project' project.slug %}">{{project.title}}</a></li>
       {% endfor %}
     </ul>
   </section>
@@ -256,7 +256,7 @@
   <h3>Releases:</h3>
   <ul class="releases-list">
     {% for project in company.project_set.all %}
-      <li><a href="{% url 'project' project.slug %}">{{project.title}}</a></li>
+      <li><a href="{% url 'django_presskit:project' project.slug %}">{{project.title}}</a></li>
     {% endfor %}
   </ul>
 </section>
@@ -306,7 +306,7 @@
       <a href="{{ image.content.url }}"><img class="attached-image" src="{% thumbnail image.content 250x250 crop %}"></a>
     {% endfor %}
     <p>Many more images are available for {{company.title}}. <a href="#contact">Contact us</a> if you have a specific request!</p>
-    <p><a href="{% url 'company_zip' company.slug %}">Download as ZIP archive</a></p>
+    <p><a href="{% url 'django_presskit:company_zip' company.slug %}">Download as ZIP archive</a></p>
   </section>
 {% endif %}
 
@@ -316,7 +316,7 @@
     {% for image in company.logos.all %}
       <a href="{{ image.content.url }}"><img class="attached-image" src="{% thumbnail image.content 250x250 crop %}"></a>
     {% endfor %}
-    <p><a href="{% url 'company_logo_zip' company.slug %}">Download as ZIP archive</a></p>
+    <p><a href="{% url 'django_presskit:company_logo_zip' company.slug %}">Download as ZIP archive</a></p>
   </section>
 {% endif %}
 
