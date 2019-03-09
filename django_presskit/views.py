@@ -27,7 +27,6 @@ def presskit(request, company_slug=None):
       try:
         company = Company.objects.get(pk=settings.DJANGO_PRESSKIT_DEFAULT_COMPANY_ID)
       except Exception as e:
-        print e
         return render(request, 'django_presskit/no_default.html')
     else:
       company = Company.objects.get(slug=company_slug)
