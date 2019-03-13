@@ -1,13 +1,20 @@
 # django-presskit
 A port of Rami Ismail's presskit()/dopresskit to Django.
 
-Requirements:
-Django < 2
-django-filer
-markdown
-django-admin-sortable2
+[![Build Status](https://travis-ci.com/FutureProofGames/django_presskit.svg?branch=develop)](https://travis-ci.com/FutureProofGames/django_presskit)
 
 ## Installing
+
+### Requirements:
+Requirements:
+* Django < 2
+* django-filer
+* easy_thumbnails
+* Markdown
+* Pillow
+* django-admin-sortable2
+
+## Configuring
 
 Add "django_presskit" and "adminsortable2" to your settings.py INSTALLED_APPS.
 
