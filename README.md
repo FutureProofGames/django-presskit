@@ -17,6 +17,14 @@ In your main urls.py, add a line like: `url(r'^presskit/', include('django_press
 
 All data can be set up in the Django admin.
 
+## Upgrading
+
+If upgrading to 1.1.0, run the following on your project after adding `adminsortable2` to your settings:
+
+```
+python manage.py reorder django_presskit.additionallink django_presskit.award django_presskit.companyimageattachment django_presskit.companylogoattachment django_presskit.companyvideo django_presskit.contact django_presskit.credit django_presskit.feature django_presskit.platform django_presskit.price django_presskit.project django_presskit.projectimageattachment django_presskit.projectlogoattachment django_presskit.quote django_presskit.social django_presskit.trailer
+```
+
 ## Converting from presskit()/dopresskit
 
 If you are switching from Rami Ismail's presskit(), you'll want to make sure any old URLs that are floating around continue to work. Presskit() URLs look like `/presskit/sheet.php?p=exploit_zero_day`. You'll want to convert those into something like `/presskit/exploit-zero-day/`.
