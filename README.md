@@ -1,7 +1,7 @@
 # django-presskit
 A port of Rami Ismail's presskit()/dopresskit to Django.
 
-[![Build Status](https://travis-ci.com/FutureProofGames/django_presskit.svg?branch=develop)](https://travis-ci.com/FutureProofGames/django_presskit)
+[![Build Status](https://travis-ci.com/FutureProofGames/django_presskit.svg?branch=develop)](https://travis-ci.com/FutureProofGames/django_presskit) [![Coverage Status](https://coveralls.io/repos/github/FutureProofGames/django-presskit/badge.svg?branch=develop)](https://coveralls.io/github/FutureProofGames/django-presskit?branch=develop)
 
 ## Installing
 
