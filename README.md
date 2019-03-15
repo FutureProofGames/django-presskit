@@ -66,3 +66,7 @@ rewrite ^(/?presskit/projects/.*?)_(.*)$  $1-$2 last
 rewrite ^/?presskit/sheet\.php$           /presskit/ permanent
 ```
 If you're using nginx and one of your slugs has more than ten underscores, add a rewrite above the first one to manually fix that one case. Nginx does not want to loop more than 10 times in a rewrite calculation.
+
+## Contributing
+
+When submitting issues or pull requests, please adhere to our (Code of Conduct)[CODE_OF_CONDUCT.md].
