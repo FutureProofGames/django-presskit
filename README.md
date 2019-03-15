@@ -1,25 +1,36 @@
 # django-presskit
 A port of Rami Ismail's presskit()/dopresskit to Django.
 
-[![Build Status](https://travis-ci.com/FutureProofGames/django_presskit.svg?branch=develop)](https://travis-ci.com/FutureProofGames/django_presskit)
+[![Build Status](https://travis-ci.com/FutureProofGames/django-presskit.svg?branch=develop)](https://travis-ci.com/FutureProofGames/django-presskit) [![Coverage Status](https://coveralls.io/repos/github/FutureProofGames/django-presskit/badge.svg?branch=develop)](https://coveralls.io/github/FutureProofGames/django-presskit?branch=develop)
 
 ## Installing
 
 ### Requirements:
-
-* Django==1.11.x
+Requirements:
+* Django < 2
 * django-filer
 * easy_thumbnails
 * Markdown
 * Pillow
+* django-admin-sortable2
 
-Add "django_presskit" to your settings INSTALLED_APPS.
+## Configuring
+
+Add "django_presskit" and "adminsortable2" to your settings.py INSTALLED_APPS.
 
 Add `DJANGO_PRESSKIT_DEFAULT_COMPANY_ID = 1` to your settings file.
 
 In your main urls.py, add a line like: `url(r'^presskit/', include('django_presskit.urls', namespace='django_presskit')),`
 
 All data can be set up in the Django admin.
+
+## Upgrading
+
+If upgrading to 1.1.0, run the following on your project after adding `adminsortable2` to your settings:
+
+```
+python manage.py reorder django_presskit.additionallink django_presskit.award django_presskit.companyimageattachment django_presskit.companylogoattachment django_presskit.companyvideo django_presskit.contact django_presskit.credit django_presskit.feature django_presskit.platform django_presskit.price django_presskit.project django_presskit.projectimageattachment django_presskit.projectlogoattachment django_presskit.quote django_presskit.social django_presskit.trailer
+```
 
 ## Converting from presskit()/dopresskit
 
@@ -55,3 +66,7 @@ rewrite ^(/?presskit/projects/.*?)_(.*)$  $1-$2 last
 rewrite ^/?presskit/sheet\.php$           /presskit/ permanent
 ```
 If you're using nginx and one of your slugs has more than ten underscores, add a rewrite above the first one to manually fix that one case. Nginx does not want to loop more than 10 times in a rewrite calculation.
+
+## Contributing
+
+When submitting issues or pull requests, please adhere to our (Code of Conduct)[CODE_OF_CONDUCT.md].
