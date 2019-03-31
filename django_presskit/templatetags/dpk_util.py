@@ -7,13 +7,9 @@ from django.utils.safestring import mark_safe
 
 register = template.Library()
 
-@register.filter('markdown', needs_autoescape=True)
-def markdown_filter(text, autoescape=True):
-    if autoescape:
-        esc = conditional_escape
-    else:
-        esc = lambda x: x
-    return mark_safe(markdown.markdown(esc(text)))
+@register.filter('markdown')
+def markdown_filter(text):
+    return mark_safe(markdown.markdown(text))
 
 @register.filter()
 def with_protocol(value):

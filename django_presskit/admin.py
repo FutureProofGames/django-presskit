@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.contrib import admin
+from adminsortable2.admin import SortableAdminMixin, SortableInlineAdminMixin
 
 from .models import AdditionalLink, Attachment, Award, Company
 from .models import CompanyImageAttachment, Contact, Credit, Feature
@@ -9,51 +10,52 @@ from .models import MonetizationPermission, Platform, Price, Project, Quote
 from .models import Social, Trailer, CompanyVideo, ProjectImageAttachment
 from .models import ProjectLogoAttachment, CompanyLogoAttachment
 
-class CompanyImagesInline(admin.StackedInline):
+class CompanyImagesInline(SortableInlineAdminMixin, admin.StackedInline):
     model = CompanyImageAttachment
     readonly_fields = ('datetime_created', 'datetime_updated',)
     extra = 1
 
 
-class ProjectImagesInline(admin.StackedInline):
+class ProjectImagesInline(SortableInlineAdminMixin, admin.StackedInline):
     model = ProjectImageAttachment
     readonly_fields = ('datetime_created', 'datetime_updated',)
     extra = 1
 
 
-class ProjectLogosInline(admin.StackedInline):
+class ProjectLogosInline(SortableInlineAdminMixin, admin.StackedInline):
     model = ProjectLogoAttachment
     readonly_fields = ('datetime_created', 'datetime_updated',)
     extra = 1
 
 
-class CompanyLogosInline(admin.StackedInline):
+class CompanyLogosInline(SortableInlineAdminMixin, admin.StackedInline):
     model = CompanyLogoAttachment
     readonly_fields = ('datetime_created', 'datetime_updated',)
     extra = 1
 
 
-class SocialInline(admin.TabularInline):
+class SocialInline(SortableInlineAdminMixin, admin.TabularInline):
     model = Social
     readonly_fields = ('datetime_created', 'datetime_updated',)
     extra = 1
 
 
-class CompanyVideoInline(admin.StackedInline):
+class CompanyVideoInline(SortableInlineAdminMixin, admin.StackedInline):
     model = CompanyVideo
     readonly_fields = ('datetime_created', 'datetime_updated',)
     extra = 1
 
 
-class AdditionalLinkAdmin(admin.ModelAdmin):
+class AdditionalLinkAdmin(SortableAdminMixin, admin.ModelAdmin):
     readonly_fields = ('datetime_created', 'datetime_updated',)
+    prepopulated_fields = {"slug": ("title",)}
 
 
 class AttachmentAdmin(admin.ModelAdmin):
     pass
 
 
-class AwardAdmin(admin.ModelAdmin):
+class AwardAdmin(SortableAdminMixin, admin.ModelAdmin):
     readonly_fields = ('datetime_created', 'datetime_updated',)
 
 
@@ -65,11 +67,11 @@ class CompanyAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("title",)}
 
 
-class ContactAdmin(admin.ModelAdmin):
+class ContactAdmin(SortableAdminMixin, admin.ModelAdmin):
     readonly_fields = ('datetime_created', 'datetime_updated',)
 
 
-class CreditAdmin(admin.ModelAdmin):
+class CreditAdmin(SortableAdminMixin, admin.ModelAdmin):
     readonly_fields = ('datetime_created', 'datetime_updated',)
 
 
@@ -77,31 +79,31 @@ class MonetizationPermissionAdmin(admin.ModelAdmin):
     readonly_fields = ('datetime_created', 'datetime_updated',)
 
 
-class FeatureInline(admin.TabularInline):
+class FeatureInline(SortableInlineAdminMixin, admin.TabularInline):
     model = Feature
     readonly_fields = ('datetime_created', 'datetime_updated',)
     extra = 1
 
 
-class PlatformInline(admin.TabularInline):
+class PlatformInline(SortableInlineAdminMixin, admin.TabularInline):
     model = Platform
     readonly_fields = ('datetime_created', 'datetime_updated',)
     extra = 1
 
 
-class PriceInline(admin.TabularInline):
+class PriceInline(SortableInlineAdminMixin, admin.TabularInline):
     model = Price
     readonly_fields = ('datetime_created', 'datetime_updated',)
     extra = 1
 
 
-class TrailerInline(admin.StackedInline):
+class TrailerInline(SortableInlineAdminMixin, admin.StackedInline):
     model = Trailer
     readonly_fields = ('datetime_created', 'datetime_updated',)
     extra = 1
 
 
-class ProjectAdmin(admin.ModelAdmin):
+class ProjectAdmin(SortableAdminMixin, admin.ModelAdmin):
     readonly_fields = ('datetime_created', 'datetime_updated',)
     filter_horizontal = (
         'additional_links', 'quotes', 'contacts', 'credits', 'awards')
@@ -110,7 +112,7 @@ class ProjectAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("title",)}
 
 
-class QuoteAdmin(admin.ModelAdmin):
+class QuoteAdmin(SortableAdminMixin, admin.ModelAdmin):
     readonly_fields = ('datetime_created', 'datetime_updated',)
 
 
