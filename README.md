@@ -1,5 +1,5 @@
 # django-presskit
-A port of Rami Ismail's presskit()/dopresskit to Django.
+A port of Rami Ismail's [presskit()/dopresskit](https://github.com/ramiismail/dopresskit) to Django.
 
 [![Build Status](https://travis-ci.com/FutureProofGames/django-presskit.svg?branch=develop)](https://travis-ci.com/FutureProofGames/django-presskit) [![Coverage Status](https://coveralls.io/repos/github/FutureProofGames/django-presskit/badge.svg?branch=develop)](https://coveralls.io/github/FutureProofGames/django-presskit?branch=develop)
 
@@ -69,4 +69,4 @@ If you're using nginx and one of your slugs has more than ten underscores, add a
 
 ## Contributing
 
-When submitting issues or pull requests, please adhere to our (Code of Conduct)[CODE_OF_CONDUCT.md].
+When submitting issues or pull requests, please adhere to our [Code of Conduct](CODE_OF_CONDUCT.md).
