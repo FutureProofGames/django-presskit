@@ -73,6 +73,7 @@ class Company(models.Model):
     contacts = models.ManyToManyField('Contact', blank=True)
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_updated = models.DateTimeField(auto_now=True)
+    asset_archive = FilerFileField(blank=True,null=True)
 
     def __unicode__(self):
         return self.title
@@ -238,6 +239,7 @@ class Project(models.Model):
     company = models.ForeignKey(Company)
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_updated = models.DateTimeField(auto_now=True)
+    asset_archive = FilerFileField(blank=True,null=True)
     my_order = models.PositiveIntegerField(default=0, blank=False, null=False)
 
     class Meta(object):
