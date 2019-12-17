@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from builtins import object
 from django.db import models
 from filer.fields.file import FilerFileField
 from filer.fields.image import FilerImageField
@@ -14,13 +15,13 @@ class AdditionalLink(models.Model):
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_updated = models.DateTimeField(auto_now=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title + ' ' + self.website
 
 class Attachment(models.Model):
     content = FilerImageField()
 
-    def __unicode__(self):
+    def __str__(self):
         return self.content.url
 
 class Award(models.Model):
@@ -29,7 +30,7 @@ class Award(models.Model):
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_updated = models.DateTimeField(auto_now=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.description
 
 
@@ -66,14 +67,14 @@ class Company(models.Model):
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_updated = models.DateTimeField(auto_now=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
 
     def get_absolute_url(self):
         from django.urls import reverse
         return reverse('django_presskit:company', kwargs={'company_slug': self.slug})
 
-    class Meta:
+    class Meta(object):
         verbose_name_plural = 'companies'
 
 
@@ -110,7 +111,7 @@ class Contact(models.Model):
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_updated = models.DateTimeField(auto_now=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -121,7 +122,7 @@ class Credit(models.Model):
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_updated = models.DateTimeField(auto_now=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.person + ', ' + self.role
 
 
@@ -131,7 +132,7 @@ class Feature(models.Model):
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_updated = models.DateTimeField(auto_now=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.description
 
 
@@ -141,7 +142,7 @@ class MonetizationPermission(models.Model):
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_updated = models.DateTimeField(auto_now=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.option
 
 
@@ -152,7 +153,7 @@ class Platform(models.Model):
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_updated = models.DateTimeField(auto_now=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.project.title + ' - ' + self.name
 
 
@@ -162,7 +163,7 @@ class Price(models.Model):
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_updated = models.DateTimeField(auto_now=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.project.title + ' - ' + self.price
 
 
@@ -203,7 +204,7 @@ class Project(models.Model):
         from django.urls import reverse
         return reverse('django_presskit:project', kwargs={'project_slug': self.slug})
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
 
 
@@ -231,7 +232,7 @@ class Quote(models.Model):
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_updated = models.DateTimeField(auto_now=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.reviewer + ', ' + self.website + ', ' + self.description
 
 
@@ -242,7 +243,7 @@ class Social(models.Model):
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_updated = models.DateTimeField(auto_now=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.company.title + ' ' + self.name
 
 

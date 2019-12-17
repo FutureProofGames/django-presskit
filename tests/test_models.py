@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from builtins import str
 from django.test import TestCase
 
 from django_presskit.models import Company, Project, AdditionalLink,\
@@ -12,14 +13,14 @@ class AdditionalLinkModelTests(TestCase):
 
     def test_unicode(self):
         link = AdditionalLink(title='Test Link', website='https://test.com')
-        self.assertEqual(unicode(link), 'Test Link https://test.com')
+        self.assertEqual(str(link), 'Test Link https://test.com')
 
 
 class AwardModelTests(TestCase):
 
     def test_unicode(self):
         award = Award(description='Test Award')
-        self.assertEqual(unicode(award), 'Test Award')
+        self.assertEqual(str(award), 'Test Award')
 
 
 class CompanyModelTests(TestCase):
@@ -30,35 +31,35 @@ class CompanyModelTests(TestCase):
 
     def test_unicode(self):
         comp = Company(title='Test Company', slug='test-company')
-        self.assertEqual(unicode(comp), 'Test Company')
+        self.assertEqual(str(comp), 'Test Company')
 
 
 class ContactModelTests(TestCase):
 
     def test_unicode(self):
         contact = Contact(name='Test Contact')
-        self.assertEqual(unicode(contact), 'Test Contact')
+        self.assertEqual(str(contact), 'Test Contact')
 
 
 class CreditModelTests(TestCase):
 
     def test_unicode(self):
         credit = Credit(person='Test Person', role='Test Role')
-        self.assertEqual(unicode(credit), 'Test Person, Test Role')
+        self.assertEqual(str(credit), 'Test Person, Test Role')
 
 
 class FeatureModelTests(TestCase):
 
     def test_unicode(self):
         feature = Feature(description='Test Feature')
-        self.assertEqual(unicode(feature), 'Test Feature')
+        self.assertEqual(str(feature), 'Test Feature')
 
 
 class MonetizationPermissionModelTests(TestCase):
 
     def test_unicode(self):
         perms = MonetizationPermission(option='Test Permission')
-        self.assertEqual(unicode(perms), 'Test Permission')
+        self.assertEqual(str(perms), 'Test Permission')
 
 
 class PlatformModelTests(TestCase):
@@ -66,7 +67,7 @@ class PlatformModelTests(TestCase):
     def test_unicode(self):
         project = Project(title='Test Project')
         plat = Platform(project=project, name='Test Platform')
-        self.assertEqual(unicode(plat), 'Test Project - Test Platform')
+        self.assertEqual(str(plat), 'Test Project - Test Platform')
 
 
 class PriceModelTests(TestCase):
@@ -74,7 +75,7 @@ class PriceModelTests(TestCase):
     def test_unicode(self):
         project = Project(title='Test Project')
         price = Price(project=project, price='Test Price')
-        self.assertEqual(unicode(price), 'Test Project - Test Price')
+        self.assertEqual(str(price), 'Test Project - Test Price')
 
 
 class ProjectModelTests(TestCase):
@@ -86,7 +87,7 @@ class ProjectModelTests(TestCase):
 
     def test_unicode(self):
         proj = Project(title='Test Project')
-        self.assertEqual(unicode(proj), 'Test Project')
+        self.assertEqual(str(proj), 'Test Project')
 
 
 class QuoteModelTests(TestCase):
@@ -94,7 +95,7 @@ class QuoteModelTests(TestCase):
     def test_unicode(self):
         quote = Quote(reviewer='Test Person', description='Test Description',
                       website='https://test.com')
-        self.assertEqual(unicode(quote), 'Test Person, https://test.com, Test Description')
+        self.assertEqual(str(quote), 'Test Person, https://test.com, Test Description')
 
 
 class SocialModelTests(TestCase):
@@ -102,4 +103,4 @@ class SocialModelTests(TestCase):
     def test_unicode(self):
         comp = Company(title='Test Company', slug='test-company')
         social = Social(company=comp, name='Test Social')
-        self.assertEqual(unicode(social), 'Test Company Test Social')
+        self.assertEqual(str(social), 'Test Company Test Social')
