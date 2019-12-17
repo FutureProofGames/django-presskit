@@ -14,6 +14,10 @@ class AdditionalLink(models.Model):
     website = models.URLField()
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_updated = models.DateTimeField(auto_now=True)
+    my_order = models.PositiveIntegerField(default=0, blank=False, null=False)
+
+    class Meta(object):
+        ordering = ['my_order', 'datetime_updated']
 
     def __str__(self):
         return self.title + ' ' + self.website
@@ -29,6 +33,10 @@ class Award(models.Model):
     info = models.CharField(max_length=1000, null=True, blank=True)
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_updated = models.DateTimeField(auto_now=True)
+    my_order = models.PositiveIntegerField(default=0, blank=False, null=False)
+
+    class Meta(object):
+        ordering = ['my_order', 'datetime_updated']
 
     def __str__(self):
         return self.description
@@ -66,6 +74,7 @@ class Company(models.Model):
     contacts = models.ManyToManyField('Contact', blank=True)
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_updated = models.DateTimeField(auto_now=True)
+    asset_archive = FilerFileField(blank=True,null=True)
 
     def __str__(self):
         return self.title
@@ -84,6 +93,10 @@ class CompanyImageAttachment(models.Model):
                                    on_delete=models.CASCADE)
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_updated = models.DateTimeField(auto_now=True)
+    my_order = models.PositiveIntegerField(default=0, blank=False, null=False)
+
+    class Meta(object):
+        ordering = ['my_order', 'datetime_updated']
 
 
 class CompanyLogoAttachment(models.Model):
@@ -92,6 +105,10 @@ class CompanyLogoAttachment(models.Model):
                                    on_delete=models.CASCADE)
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_updated = models.DateTimeField(auto_now=True)
+    my_order = models.PositiveIntegerField(default=0, blank=False, null=False)
+
+    class Meta(object):
+        ordering = ['my_order', 'datetime_updated']
 
 
 class CompanyVideo(models.Model):
@@ -102,6 +119,10 @@ class CompanyVideo(models.Model):
                           related_name='company_video')
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_updated = models.DateTimeField(auto_now=True)
+    my_order = models.PositiveIntegerField(default=0, blank=False, null=False)
+
+    class Meta(object):
+        ordering = ['my_order', 'datetime_updated']
 
 
 class Contact(models.Model):
@@ -110,6 +131,10 @@ class Contact(models.Model):
     email = models.EmailField(null=True, blank=True)
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_updated = models.DateTimeField(auto_now=True)
+    my_order = models.PositiveIntegerField(default=0, blank=False, null=False)
+
+    class Meta(object):
+        ordering = ['my_order', 'datetime_updated']
 
     def __str__(self):
         return self.name
@@ -121,6 +146,10 @@ class Credit(models.Model):
     role = models.TextField(null=True, blank=True)
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_updated = models.DateTimeField(auto_now=True)
+    my_order = models.PositiveIntegerField(default=0, blank=False, null=False)
+
+    class Meta(object):
+        ordering = ['my_order', 'datetime_updated']
 
     def __str__(self):
         return self.person + ', ' + self.role
@@ -131,6 +160,10 @@ class Feature(models.Model):
     project = models.ForeignKey('Project')
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_updated = models.DateTimeField(auto_now=True)
+    my_order = models.PositiveIntegerField(default=0, blank=False, null=False)
+
+    class Meta(object):
+        ordering = ['my_order', 'datetime_updated']
 
     def __str__(self):
         return self.description
@@ -152,6 +185,10 @@ class Platform(models.Model):
     project = models.ForeignKey('Project')
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_updated = models.DateTimeField(auto_now=True)
+    my_order = models.PositiveIntegerField(default=0, blank=False, null=False)
+
+    class Meta(object):
+        ordering = ['my_order', 'datetime_updated']
 
     def __str__(self):
         return self.project.title + ' - ' + self.name
@@ -162,6 +199,10 @@ class Price(models.Model):
     project = models.ForeignKey('Project')
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_updated = models.DateTimeField(auto_now=True)
+    my_order = models.PositiveIntegerField(default=0, blank=False, null=False)
+
+    class Meta(object):
+        ordering = ['my_order', 'datetime_updated']
 
     def __str__(self):
         return self.project.title + ' - ' + self.price
@@ -199,6 +240,11 @@ class Project(models.Model):
     company = models.ForeignKey(Company)
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_updated = models.DateTimeField(auto_now=True)
+    asset_archive = FilerFileField(blank=True,null=True)
+    my_order = models.PositiveIntegerField(default=0, blank=False, null=False)
+
+    class Meta(object):
+        ordering = ['my_order', 'datetime_updated']
 
     def get_absolute_url(self):
         from django.urls import reverse
@@ -214,6 +260,10 @@ class ProjectImageAttachment(models.Model):
                                    on_delete=models.CASCADE)
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_updated = models.DateTimeField(auto_now=True)
+    my_order = models.PositiveIntegerField(default=0, blank=False, null=False)
+
+    class Meta(object):
+        ordering = ['my_order', 'datetime_updated']
 
 
 class ProjectLogoAttachment(models.Model):
@@ -222,6 +272,10 @@ class ProjectLogoAttachment(models.Model):
                                    on_delete=models.CASCADE)
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_updated = models.DateTimeField(auto_now=True)
+    my_order = models.PositiveIntegerField(default=0, blank=False, null=False)
+
+    class Meta(object):
+        ordering = ['my_order', 'datetime_updated']
 
 
 class Quote(models.Model):
@@ -231,6 +285,10 @@ class Quote(models.Model):
     description = models.TextField()
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_updated = models.DateTimeField(auto_now=True)
+    my_order = models.PositiveIntegerField(default=0, blank=False, null=False)
+
+    class Meta(object):
+        ordering = ['my_order', 'datetime_updated']
 
     def __str__(self):
         return self.reviewer + ', ' + self.website + ', ' + self.description
@@ -242,6 +300,10 @@ class Social(models.Model):
     company = models.ForeignKey(Company)
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_updated = models.DateTimeField(auto_now=True)
+    my_order = models.PositiveIntegerField(default=0, blank=False, null=False)
+
+    class Meta(object):
+        ordering = ['my_order', 'datetime_updated']
 
     def __str__(self):
         return self.company.title + ' ' + self.name
@@ -255,3 +317,7 @@ class Trailer(models.Model):
                           related_name='trailer_video')
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_updated = models.DateTimeField(auto_now=True)
+    my_order = models.PositiveIntegerField(default=0, blank=False, null=False)
+
+    class Meta(object):
+        ordering = ['my_order', 'datetime_updated']

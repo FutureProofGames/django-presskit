@@ -1,8 +1,13 @@
 language: python
+env:
+    PYTHONPATH: .
 python:
   - "3.6.8"
 install:
   - pip install -r requirements.txt
+  - pip install coverage coveralls
   - pip install .
 script:
-  - python runtests.py
+  - coverage run --source=django_presskit runtests.py
+after_success:
+  - coveralls

@@ -7,6 +7,7 @@ INSTALLED_APPS = [
     "django_presskit",
     "easy_thumbnails",
     "filer",
+    "adminsortable2",
 ]
 
 DATABASES = {
