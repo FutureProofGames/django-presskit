@@ -1,6 +1,8 @@
+from future import standard_library
+standard_library.install_aliases()
 import markdown
 import re
-from urlparse import urlparse
+from urllib.parse import urlparse
 from django import template
 from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
