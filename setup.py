@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="django_presskit",
-    version="1.1.2",
+    version="1.2.0",
     author="Future Proof Games",
     author_email="info@futureproofgames.com",
     description="A port of presskit() to Django",
@@ -15,7 +15,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     include_package_data=True,
     classifiers=[
-        "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 3.7",
         "Framework :: Django :: 1.11",
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
         "Operating System :: OS Independent",

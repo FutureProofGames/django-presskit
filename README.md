@@ -6,13 +6,14 @@ A port of Rami Ismail's [presskit()/dopresskit](https://github.com/ramiismail/do
 ## Installing
 
 ### Requirements:
-Requirements:
+
 * Django < 2
 * django-filer
 * easy_thumbnails
 * Markdown
 * Pillow
 * django-admin-sortable2
+* future
 
 ## Configuring
 
@@ -66,6 +67,14 @@ rewrite ^(/?presskit/projects/.*?)_(.*)$  $1-$2 last
 rewrite ^/?presskit/sheet\.php$           /presskit/ permanent
 ```
 If you're using nginx and one of your slugs has more than ten underscores, add a rewrite above the first one to manually fix that one case. Nginx does not want to loop more than 10 times in a rewrite calculation.
+
+## Changelog
+
+### 1.2.0
+
+* Upgrade to support Python 3.6+
+* Bump to Pillow 6.2.0
+* Bump to Django 1.11.23
 
 ## Contributing
 
