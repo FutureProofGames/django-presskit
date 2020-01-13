@@ -68,6 +68,14 @@ rewrite ^/?presskit/sheet\.php$           /presskit/ permanent
 ```
 If you're using nginx and one of your slugs has more than ten underscores, add a rewrite above the first one to manually fix that one case. Nginx does not want to loop more than 10 times in a rewrite calculation.
 
+## Changelog
+
+### 1.2.0
+
+* Upgrade to support Python 3.6+
+* Bump to Pillow 6.2.0
+* Bump to Django 1.11.23
+
 ## Contributing
 
 When submitting issues or pull requests, please adhere to our [Code of Conduct](CODE_OF_CONDUCT.md).
