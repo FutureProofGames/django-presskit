@@ -6,13 +6,14 @@ A port of Rami Ismail's [presskit()/dopresskit](https://github.com/ramiismail/do
 ## Installing
 
 ### Requirements:
-Requirements:
+
 * Django < 2
 * django-filer
 * easy_thumbnails
 * Markdown
 * Pillow
 * django-admin-sortable2
+* future
 
 ## Configuring
 
