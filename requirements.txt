@@ -1,4 +1,4 @@
-Django==1.11.23
+Django==1.11.28
 django-filer==1.4.0
 easy_thumbnails==2.5
 Markdown==2.6.11
