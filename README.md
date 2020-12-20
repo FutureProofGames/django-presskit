@@ -7,11 +7,7 @@ A port of Rami Ismail's [presskit()/dopresskit](https://github.com/ramiismail/do
 
 ### Requirements:
 
-<<<<<<< Updated upstream
-* Django < 2
-=======
 * Django>=2.2
->>>>>>> Stashed changes
 * django-filer
 * easy_thumbnails
 * Markdown
