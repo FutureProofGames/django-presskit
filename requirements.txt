@@ -1,9 +1,9 @@
 coverage==4.4.2
-Django==3.1.4
+django-admin-sortable2==0.7
 django-filer==2.0.2
 django-polymorphic==3.0.0
+Django==3.1.4
 easy_thumbnails==2.7.1
+future==0.18.2
 Markdown==2.6.11
 Pillow==6.2.0
-future==0.18.2
-django-admin-sortable2==0.7
