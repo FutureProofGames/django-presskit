@@ -2,6 +2,7 @@ from django.conf.urls import url
 
 from . import views
 
+app_name = 'presskit'
 urlpatterns = [
     url(r'^$', views.presskit, name='default'),
     url(r'^(?P<company_slug>[-\w]+)/$', views.presskit, name='company'),

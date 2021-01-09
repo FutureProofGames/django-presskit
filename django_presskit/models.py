@@ -23,7 +23,7 @@ class AdditionalLink(models.Model):
         return self.title + ' ' + self.website
 
 class Attachment(models.Model):
-    content = FilerImageField()
+    content = FilerImageField(on_delete=models.CASCADE)
 
     def __str__(self):
         return self.content.url
@@ -47,7 +47,8 @@ class Company(models.Model):
     slug = models.SlugField(unique=True)
     website = models.URLField(null=True, blank=True)
     header_image = FilerImageField(null=True, blank=True,
-                                   related_name='company_header_image')
+                                   related_name='company_header_image',
+                                   on_delete=models.SET_NULL)
     based_in = models.CharField(max_length=400, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     history = models.TextField(null=True, blank=True)
@@ -74,7 +75,8 @@ class Company(models.Model):
     contacts = models.ManyToManyField('Contact', blank=True)
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_updated = models.DateTimeField(auto_now=True)
-    asset_archive = FilerFileField(blank=True,null=True)
+    asset_archive = FilerFileField(blank=True, null=True,
+                                   on_delete=models.SET_NULL)
 
     def __str__(self):
         return self.title
@@ -113,10 +115,11 @@ class CompanyLogoAttachment(models.Model):
 
 class CompanyVideo(models.Model):
     name = models.CharField(max_length=400)
-    company = models.ForeignKey(Company, related_name='videos')
+    company = models.ForeignKey(Company, related_name='videos', on_delete=models.CASCADE)
     embed_url = models.URLField(null=True, blank=True)
     file = FilerFileField(null=True, blank=True,
-                          related_name='company_video')
+                          related_name='company_video',
+                          on_delete=models.SET_NULL)
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_updated = models.DateTimeField(auto_now=True)
     my_order = models.PositiveIntegerField(default=0, blank=False, null=False)
@@ -157,7 +160,7 @@ class Credit(models.Model):
 
 class Feature(models.Model):
     description = models.CharField(max_length=1000)
-    project = models.ForeignKey('Project')
+    project = models.ForeignKey('Project', on_delete=models.CASCADE)
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_updated = models.DateTimeField(auto_now=True)
     my_order = models.PositiveIntegerField(default=0, blank=False, null=False)
@@ -182,7 +185,7 @@ class MonetizationPermission(models.Model):
 class Platform(models.Model):
     name = models.CharField(max_length=200)
     website = models.URLField(null=True, blank=True)
-    project = models.ForeignKey('Project')
+    project = models.ForeignKey('Project', on_delete=models.CASCADE)
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_updated = models.DateTimeField(auto_now=True)
     my_order = models.PositiveIntegerField(default=0, blank=False, null=False)
@@ -196,7 +199,7 @@ class Platform(models.Model):
 
 class Price(models.Model):
     price = models.CharField(max_length=200)
-    project = models.ForeignKey('Project')
+    project = models.ForeignKey('Project', on_delete=models.CASCADE)
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_updated = models.DateTimeField(auto_now=True)
     my_order = models.PositiveIntegerField(default=0, blank=False, null=False)
@@ -212,7 +215,8 @@ class Project(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField(unique=True)
     header_image = FilerImageField(null=True, blank=True,
-                                   related_name='project_header_image')
+                                   related_name='project_header_image',
+                                   on_delete=models.SET_NULL)
     release_date = models.CharField(max_length=200)
     website = models.URLField()
     description = models.TextField()
@@ -224,7 +228,8 @@ class Project(models.Model):
                                    through='ProjectLogoAttachment',
                                    related_name='project_logos')
     press_can_request_copy = models.BooleanField()
-    monetization_permission = models.ForeignKey(MonetizationPermission)
+    monetization_permission = models.ForeignKey(MonetizationPermission,
+        on_delete=models.CASCADE)
     distribute_game_id = models.CharField(
         null=True, blank=True, max_length=25, help_text='The game ID from your Distribute() keyfile (https://dodistribute.com/games/presskit/THIS-ID/)')
     distribute_access_hash = models.CharField(
@@ -237,10 +242,11 @@ class Project(models.Model):
     awards = models.ManyToManyField('Award', blank=True)
     credits = models.ManyToManyField(Credit, blank=True)
     contacts = models.ManyToManyField(Contact, blank=True)
-    company = models.ForeignKey(Company)
+    company = models.ForeignKey(Company, on_delete=models.CASCADE)
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_updated = models.DateTimeField(auto_now=True)
-    asset_archive = FilerFileField(blank=True,null=True)
+    asset_archive = FilerFileField(blank=True, null=True,
+                                   on_delete=models.SET_NULL)
     my_order = models.PositiveIntegerField(default=0, blank=False, null=False)
 
     class Meta(object):
@@ -297,7 +303,7 @@ class Quote(models.Model):
 class Social(models.Model):
     name = models.CharField(max_length=200)
     website = models.URLField()
-    company = models.ForeignKey(Company)
+    company = models.ForeignKey(Company, on_delete=models.CASCADE)
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_updated = models.DateTimeField(auto_now=True)
     my_order = models.PositiveIntegerField(default=0, blank=False, null=False)
@@ -312,9 +318,11 @@ class Social(models.Model):
 class Trailer(models.Model):
     name = models.CharField(max_length=400)
     embed_url = models.URLField(null=True, blank=True)
-    project = models.ForeignKey(Project, related_name='videos')
+    project = models.ForeignKey(Project, related_name='videos',
+                                on_delete=models.CASCADE)
     file = FilerFileField(null=True, blank=True,
-                          related_name='trailer_video')
+                          related_name='trailer_video',
+                          on_delete=models.SET_NULL)
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_updated = models.DateTimeField(auto_now=True)
     my_order = models.PositiveIntegerField(default=0, blank=False, null=False)
