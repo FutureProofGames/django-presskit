@@ -17,6 +17,7 @@ setuptools.setup(
     classifiers=[
         "Programming Language :: Python :: 3.7",
         "Framework :: Django :: 2.2",
+        "Framework :: Django :: 3.1",
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
         "Operating System :: OS Independent",
     ],

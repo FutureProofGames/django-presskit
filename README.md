@@ -8,12 +8,12 @@ A port of Rami Ismail's [presskit()/dopresskit](https://github.com/ramiismail/do
 ### Requirements:
 
 * Django>=2.2
-* django-filer
-* easy_thumbnails
-* Markdown
-* Pillow
-* django-admin-sortable2
-* future
+* django-filer>=2.0.2
+* easy_thumbnails>=2.7.1
+* Markdown>=2.6.11
+* Pillow>=7.1.0
+* django-admin-sortable2>=0.7.7
+* future>=0.18.2
 
 ## Configuring
 
