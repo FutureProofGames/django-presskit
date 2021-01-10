@@ -7,13 +7,13 @@ A port of Rami Ismail's [presskit()/dopresskit](https://github.com/ramiismail/do
 
 ### Requirements:
 
-* Django < 2
-* django-filer
-* easy_thumbnails
-* Markdown
-* Pillow
-* django-admin-sortable2
-* future
+* Django>=2.2
+* django-filer>=2.0.2
+* easy_thumbnails>=2.7.1
+* Markdown>=2.6.11
+* Pillow>=7.1.0
+* django-admin-sortable2>=0.7.7
+* future>=0.18.2
 
 ## Configuring
 
@@ -69,6 +69,10 @@ rewrite ^/?presskit/sheet\.php$           /presskit/ permanent
 If you're using nginx and one of your slugs has more than ten underscores, add a rewrite above the first one to manually fix that one case. Nginx does not want to loop more than 10 times in a rewrite calculation.
 
 ## Changelog
+
+### 1.3.0
+
+* Add support for Django 2 and 3, drop support for Django 1
 
 ### 1.2.0
 
