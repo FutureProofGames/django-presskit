@@ -70,6 +70,9 @@ If you're using nginx and one of your slugs has more than ten underscores, add a
 
 ## Changelog
 
+### 1.3.1
+* Upgrade packages
+
 ### 1.3.0
 
 * Add support for Django 2 and 3, drop support for Django 1
