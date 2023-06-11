@@ -52,6 +52,8 @@ RewriteRule "^(/?presskit/projects/.*)_(.*)$"  "$1-$2" [R=301]
 RewriteRule "^/?presskit/sheet\.php$ "              "/presskit/" [R=301]
 ```
 
+**Note**: If you are running python through Passenger (as one does on Dreamhost hosting, for instance), these rewrite rules will likely not work, as Passenger does additional processing of URLs.
+
 If you're using nginx for rewrites, this would look like:
 
 ```
@@ -67,6 +69,7 @@ rewrite ^(/?presskit/projects/.*?)_(.*)$  $1-$2 last
 rewrite ^/?presskit/sheet\.php$           /presskit/ permanent
 ```
 If you're using nginx and one of your slugs has more than ten underscores, add a rewrite above the first one to manually fix that one case. Nginx does not want to loop more than 10 times in a rewrite calculation.
+
 
 ## Changelog
 
