@@ -6,4 +6,4 @@ Django==3.1.14
 easy_thumbnails==2.7.1
 future==0.18.2
 Markdown==2.6.11
-Pillow==9.0.1
+Pillow==10.0.1
