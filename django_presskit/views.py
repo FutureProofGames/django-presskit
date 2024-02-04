@@ -1,14 +1,11 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-import zipfile
-import os
-from io import BytesIO
+from importlib.metadata import version
 
 from django.conf import settings
-from django.http import HttpResponse, Http404
+from django.http import Http404
 from django.shortcuts import render, redirect
-from django.views.decorators.cache import cache_page
 
 from .models import Company, Project
 
@@ -33,6 +30,7 @@ def presskit(request, company_slug=None):
     context = {
       'request': request,
       'company': company,
+      'version': version('django_presskit')
     }
     return render(request, 'django_presskit/company.html', context)
 
@@ -42,6 +40,7 @@ def project(request, project_slug):
     context = {
       'request': request,
       'project': project,
+      'version': version('django_presskit')
     }
     return render(request, 'django_presskit/project.html', context)
 
@@ -49,6 +48,7 @@ def project_xml(request, project_slug):
     project = Project.objects.get(slug=project_slug)
     context = {
       'project': project,
+      'version': version('django_presskit')
     }
     return render(request, 'django_presskit/data.xml', context, content_type='text/xml')
 

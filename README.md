@@ -7,12 +7,12 @@ A port of Rami Ismail's [presskit()/dopresskit](https://github.com/ramiismail/do
 
 ### Requirements:
 
-* Django>=2.2
+* Django>=3.2
 * django-filer>=2.0.2
 * easy_thumbnails>=2.7.1
 * Markdown>=2.6.11
 * Pillow>=7.1.0
-* django-admin-sortable2>=0.7.7
+* django-admin-sortable2>=1.0.4
 * future>=0.18.2
 
 ## Configuring
@@ -72,6 +72,13 @@ If you're using nginx and one of your slugs has more than ten underscores, add a
 
 
 ## Changelog
+
+### 1.4.0
+* Update requirements to Python 3.8 and Django 3.2
+* Remove support for Django 2.1, which ended official support in 2021
+* Update to support changes in django-admin-sortable
+* Add DPK version number to footer
+* Clean up unnecessary imports in views
 
 ### 1.3.1
 * Upgrade packages
