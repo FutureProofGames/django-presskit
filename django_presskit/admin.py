@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.contrib import admin
-from adminsortable2.admin import SortableAdminMixin, SortableInlineAdminMixin
+from adminsortable2.admin import SortableAdminMixin, SortableAdminBase, SortableInlineAdminMixin
 
 from .models import AdditionalLink, Attachment, Award, Company
 from .models import CompanyImageAttachment, Contact, Credit, Feature
@@ -59,7 +59,7 @@ class AwardAdmin(SortableAdminMixin, admin.ModelAdmin):
     readonly_fields = ('datetime_created', 'datetime_updated',)
 
 
-class CompanyAdmin(admin.ModelAdmin):
+class CompanyAdmin(SortableAdminBase, admin.ModelAdmin):
     readonly_fields = ('datetime_created', 'datetime_updated',)
     filter_horizontal = (
         'additional_links', 'quotes', 'contacts', 'credits', 'awards')
