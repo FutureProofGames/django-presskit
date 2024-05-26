@@ -7,12 +7,12 @@ A port of Rami Ismail's [presskit()/dopresskit](https://github.com/ramiismail/do
 
 ### Requirements:
 
-* Django>=2.2
+* Django>=3.2
 * django-filer>=2.0.2
 * easy_thumbnails>=2.7.1
 * Markdown>=2.6.11
 * Pillow>=7.1.0
-* django-admin-sortable2>=0.7.7
+* django-admin-sortable2>=1.0.4
 * future>=0.18.2
 
 ## Configuring
@@ -52,6 +52,8 @@ RewriteRule "^(/?presskit/projects/.*)_(.*)$"  "$1-$2" [R=301]
 RewriteRule "^/?presskit/sheet\.php$ "              "/presskit/" [R=301]
 ```
 
+**Note**: If you are running python through Passenger (as one does on Dreamhost hosting, for instance), these rewrite rules will likely not work, as Passenger does additional processing of URLs.
+
 If you're using nginx for rewrites, this would look like:
 
 ```
@@ -68,7 +70,15 @@ rewrite ^/?presskit/sheet\.php$           /presskit/ permanent
 ```
 If you're using nginx and one of your slugs has more than ten underscores, add a rewrite above the first one to manually fix that one case. Nginx does not want to loop more than 10 times in a rewrite calculation.
 
+
 ## Changelog
+
+### 1.4.0
+* Update requirements to Python 3.8 and Django 3.2
+* Remove support for Django 2.1, which ended official support in 2021
+* Update to support changes in django-admin-sortable
+* Add DPK version number to footer
+* Clean up unnecessary imports in views
 
 ### 1.3.1
 * Upgrade packages
