@@ -1,10 +1,10 @@
 language: python
 env:
-    PYTHONPATH: .
-    matrix:
-      - DJANGO='>=3.1,<3.2'
-      - DJANGO='>=3.0,<3.1'
-      - DJANGO='>=2.2,<3.0'
+  PYTHONPATH: .
+  matrix:
+    - DJANGO='>=3.1,<3.2'
+    - DJANGO='>=3.0,<3.1'
+    - DJANGO='>=2.2,<3.0'
 python:
   - 3.8
   - 3.7
