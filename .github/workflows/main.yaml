@@ -23,6 +23,7 @@ jobs:
         pip install -r requirements.txt
         pip install coveralls
         pip install django==${{ matrix.django-version }}
+        pip install -e .
     - name: Run Tests and Coverage
       run: |
         coverage run --source=django_presskit runtests.py
