@@ -27,6 +27,7 @@ jobs:
     - name: Run Tests and Coverage
       run: |
         coverage run --source=django_presskit runtests.py
-    - name: Run coveralls
-      run: |
-        coveralls
+    - name: Coveralls
+      uses: coverallsapp/github-action@v2
+      with:
+        github-token: ${{ secrets.COVERALLS_TOKEN }}
