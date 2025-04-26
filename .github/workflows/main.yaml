@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     strategy:
       max-parallel: 4
       matrix:
@@ -22,7 +22,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         pip install coverage coveralls
-        pip install --pre django$DJANGO
+        pip install --pre django${{ matrix.django-version }}
     - name: Run Tests and Coverage
       run: |
         coverage run --source=django_presskit runtests.py
