@@ -1,7 +1,7 @@
 # django-presskit
 A port of Rami Ismail's [presskit()/dopresskit](https://github.com/ramiismail/dopresskit) to Django.
 
-[![Build Status](https://travis-ci.com/FutureProofGames/django-presskit.svg?branch=develop)](https://travis-ci.com/FutureProofGames/django-presskit) [![Coverage Status](https://coveralls.io/repos/github/FutureProofGames/django-presskit/badge.svg?branch=develop)](https://coveralls.io/github/FutureProofGames/django-presskit?branch=develop)
+[![django-presskit CI](https://github.com/FutureProofGames/django-presskit/actions/workflows/main.yaml/badge.svg)](https://github.com/FutureProofGames/django-presskit/actions/workflows/main.yaml) [![Coverage Status](https://coveralls.io/repos/github/FutureProofGames/django-presskit/badge.svg?branch=develop)](https://coveralls.io/github/FutureProofGames/django-presskit?branch=develop)
 
 ## Installing
 
@@ -72,6 +72,11 @@ If you're using nginx and one of your slugs has more than ten underscores, add a
 
 
 ## Changelog
+
+### 1.4.1
+
+* Update various python packages: Pillow, future, django (still 3.2)
+* Add Github builds to replace old Travis CI builds, including code coverage
 
 ### 1.4.0
 * Update requirements to Python 3.8 and Django 3.2
