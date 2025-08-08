@@ -9,7 +9,7 @@ A port of Rami Ismail's [presskit()/dopresskit](https://github.com/ramiismail/do
 
 * Django>=3.2
 * django-filer>=3.3.0
-* easy_thumbnails>=2.7.1
+* easy_thumbnails==2.9 
 * Markdown>=2.6.11
 * Pillow>=10.3.0
 * django-admin-sortable2>=1.0.4
