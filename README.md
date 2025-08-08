@@ -73,6 +73,10 @@ If you're using nginx and one of your slugs has more than ten underscores, add a
 
 ## Changelog
 
+### 1.4.2
+
+* Minor version bumps to Django, pillow, and filer for security
+
 ### 1.4.1
 
 * Update various python packages: Pillow, future, django (still 3.2)
