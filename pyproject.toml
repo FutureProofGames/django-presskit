@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools >= 77.0.3"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "django-presskit"
+version = "1.4.2"
+authors = [
+  { name="Future Proof Games", email="info@futureproofgames.com" },
+]
+description = "A port of presskit() to Django"
+readme = "README.md"
+requires-python = "~=3.8, ~=3.9, ~=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Framework :: Django :: 3.2",
+    "Operating System :: OS Independent",
+]
+license = "GPL-3.0-or-later"
+license-files = ["LICEN[CS]E*"]
+
+[project.urls]
+Homepage = "https://github.com/FutureProofGames/django-presskit"
+Repository = "https://github.com/FutureProofGames/django-presskit.git"
+Issues = "https://github.com/FutureProofGames/django-presskit/issues"
