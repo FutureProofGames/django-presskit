@@ -10,7 +10,7 @@ authors = [
 ]
 description = "A port of presskit() to Django"
 readme = "README.md"
-requires-python = "~=3.8, ~=3.9, ~=3.10"
+requires-python = ">=3.8"
 classifiers = [
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.8",
@@ -19,8 +19,7 @@ classifiers = [
     "Framework :: Django :: 3.2",
     "Operating System :: OS Independent",
 ]
-license = "GPL-3.0-or-later"
-license-files = ["LICEN[CS]E*"]
+license-files = ["LICENSE"]
 
 [project.urls]
 Homepage = "https://github.com/FutureProofGames/django-presskit"
