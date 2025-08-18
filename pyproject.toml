@@ -19,7 +19,6 @@ classifiers = [
     "Framework :: Django :: 3.2",
     "Operating System :: OS Independent",
 ]
-license-files = ["LICENSE"]
 
 [project.urls]
 Homepage = "https://github.com/FutureProofGames/django-presskit"
