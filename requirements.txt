@@ -4,6 +4,6 @@ django-filer==3.3.0
 django-polymorphic==3.0.0
 Django==3.2.25
 easy_thumbnails==2.9
-future==0.18.3
+future==1.0.0
 Markdown==2.6.11
 Pillow==10.3.0
